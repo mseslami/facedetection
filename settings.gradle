@@ -1,1 +1,2 @@
 include ':app', ':croplayout'
+include ':openCVLibrary342'
