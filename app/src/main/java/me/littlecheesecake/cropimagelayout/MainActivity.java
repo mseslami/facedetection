@@ -7,7 +7,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -31,11 +30,10 @@ import org.opencv.core.Mat;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Response;
-
-import static org.opencv.imgcodecs.Imgcodecs.imread;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -60,25 +58,25 @@ public class MainActivity extends AppCompatActivity {
     FragmentTransaction ft1;
     FragmentManager fm1;
     crop fragment1;
-    Mat mat ;
+    public static Mat mat;
     private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
         public void onManagerConnected(int status) {
             switch (status) {
-                case LoaderCallbackInterface.SUCCESS:
-                {
+                case LoaderCallbackInterface.SUCCESS: {
                     Log.i("OpenCV", "OpenCV loaded successfully");
-                    mat =new Mat();
-                } break;
-                default:
-                {
+                    mat = new Mat();
+                }
+                break;
+                default: {
                     super.onManagerConnected(status);
-                } break;
+                }
+                break;
             }
         }
     };
-    public void onResume()
-    {
+
+    public void onResume() {
         super.onResume();
         if (!OpenCVLoader.initDebug()) {
             Log.d("OpenCV", "Internal OpenCV library not found. Using OpenCV Manager for initialization");
@@ -88,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
             mLoaderCallback.onManagerConnected(LoaderCallbackInterface.SUCCESS);
         }
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -251,27 +250,144 @@ public class MainActivity extends AppCompatActivity {
 //        gettotalscorelist.setAction("GetTotalScoreList");
 //        gettotalscorelist.setPar1("Day");
 
+
+                        Bitmap bmp32 = cameraphoto.copy(Bitmap.Config.RGB_565, true);
+                        Utils.bitmapToMat(bmp32, mat);
+
+
+
+                        List pixel = new ArrayList();
+//                        double[] pixel = new double[3];
+//                        ArrayList pixel = new ArrayList();
+
+                        ArrayList rows = new ArrayList();
+                        ArrayList cols = new ArrayList();
+//                        ArrayList[][] u = new ArrayList[mat.rows()][mat.cols()];
+                        for (int i = 0; i < mat.rows(); i++) {
+                            rows.clear();
+                            for (int j = 0; j < mat.cols(); j++) {
+                                Log.d("seemat", "onClick: mat i is :" + mat.get(i, j)[0] + "  " + mat.get(i, j)[1] + "  " + mat.get(i, j)[2] + "  "
+                                        + mat.get(i, j)[3]);
+//                                pixel = null;
+//                                pixel = null;
+//                                pixel.clear();
+
+//                                ArrayList<double[]> temp = null;
+                                double[] temp = new double[3]; // use double[] instead of byte[]
+//                                mat.get(i, j, temp);
+                                temp = (mat.get(i, j));
+//                                temp = mat.col
+//                                temp[4] = null;
+
+
+//                                if (temp[0]!= 0.0){
+//                                    Log.d("see temp", "onClick: see tem:"+temp[0]+temp[1]+temp[2]);
+//                                }
+//                                double[] temp = mat.get(i,j);
+//                                pixel.add(mat.get(i,j));
+//                                pixel.remove(3);
+
+
+//                                pixel.add(temp[0]);
+//                                pixel.add(temp[1]);
+//                                pixel.add(temp[2]);
+
+//                                pixel.add(temp );
+//                                pixel[0]=temp[0];
+//                                pixel[1]=temp[1];
+//                                pixel[2]=temp[2];
+//                                pixel.add (mat.get(i, j)[0]);
+//                                pixel.add(mat.get(i, j)[1]);
+//                                pixel.add(mat.get(i, j)[2]);
+//                                u[i][j].add(pixel);
+//
+//                                rows.add(pixel);
+
+                                rows.add(mat.get(i, j));
+
+                            }
+                            cols.add(rows);
+                        }
+                        Log.d("here", "onClick: see cols" + cols);
+//                        Log.d("see cols", "onClick: cols is here" + cols);
+//                        Log.d("seemat", "onClick: mat is here" + mat.toString());
+//                        for (int i =0; i<cols.size(); i++){}
+//                            for (int j =0 ; j< rows.size(); j++){
+//                                Log.d("k", "onClick: just just hrer"+ cols.get(i));
+//                            }
+//                        }
+
+//                        datatopost = "[";
+//                        for (int i = 0; i < mat.rows(); i++) {
+//                            if (i != 0) {
+//                                datatopost = datatopost + ",[";
+//                            } else if (i == 0)
+//                                datatopost = datatopost + "[";
+//                            for (int j = 0; j < mat.cols(); j++) {
+//                                if (j != 0) {
+//                                    datatopost = datatopost + ",[";
+//                                } else if (j == 0)
+//                                    datatopost = datatopost + "[";
+//
+//                                datatopost = datatopost + mat.get(i, j)[0] + ",";
+//                                datatopost = datatopost + mat.get(i, j)[0] + ",";
+//                                datatopost = datatopost + mat.get(i, j)[0] + "]";
+////                                pix[index] = 0xff000000 | (RGB[0] << 16) | (RGB[1] << 8) | RGB[2];
+//
+//
+//                            }
+//                            datatopost = datatopost + "]";
+//                            if (i == mat.rows() - 1) {
+//                                Log.d("see datatopost", "onClick: see datatopost" + datatopost);
+//                            }
+//                        }
+//                        datatopost = datatopost + "]";
+//
+//                        Log.d("datatopost", "onClick: see completed datatopost" + datatopost);
+
 //                        RequestInterface totalscoreservice = ApiClient.getClient().create(RequestInterface.class);
-//                        Call<String> calltotalscore = totalscoreservice.callcontent(datatopost);
+//                        Call<String> calltotalscore = totalscoreservice.callcontent(mat);
+//                        Log.d("mat ", "onClick: mat is sent  " + mat.get(0, 0)[0]);
 //                        calltotalscore.enqueue(new retrofit2.Callback<String>() {
 //                            @Override
 //                            public void onResponse(Call<String> call, Response<String> response) {
-//                                Log.d("my apis", "onResponse: you are inside on response");
+//                                Log.d("wwwwwwwwwwwwwwwwww", "onResponse: you are inside on response:  " + response.message()
+//                                        + "  " + response.body());
+//                                Log.d("wwwwwwwwwwwwwwwwww", "onResponse: response is being done");
 //
 //                            }
 //
 //                            @Override
 //                            public void onFailure(Call<String> call, Throwable t) {
-//                                Log.d("my apis", "userscoin\nonFailure: post wasn't successfully" + t);
+//                                Log.d("wwwwwwwwwwwwwwwwww", "userscoin\nonFailure: post wasn't successfully" + t);
 //                            }
 //                        });
+
+
+                        //second request:
+                        RequestInterface totalscoreservice2 = ApiClient.getClient().create(RequestInterface.class);
+                        Call<ArrayList> calltotalscore2 = totalscoreservice2.callcontent2(cols);
+                        calltotalscore2.enqueue(new retrofit2.Callback<ArrayList>() {
+                            @Override
+                            public void onResponse(Call<ArrayList> call, Response<ArrayList> response) {
+                                Log.d("wwwwwwwwwwwwwwwwww", "222222222222222onResponse: you are inside on response:  " + response.message()
+                                        + "  " + response.body());
+                                Log.d("wwwwwwwwwwwwwwwwww", "222222222222222onResponse: response is being done");
+
+                            }
+
+                            @Override
+                            public void onFailure(Call<ArrayList> call, Throwable t) {
+                                Log.d("wwwwwwwwwwwwwwwwww", "222222222222222userscoin\nonFailure: post wasn't successfully" + t);
+                            }
+                        });
 
 
                     } else {
                         Toast.makeText(MainActivity.this, "Please choose a photo", Toast.LENGTH_SHORT).show();
                     }
                 }
-
+//                java.lang.IllegalStateException: Expected a string but was BEGIN_ARRAY at line 1 column 2 path $
 
             }
         });
@@ -377,23 +493,35 @@ public class MainActivity extends AppCompatActivity {
             cameraphoto = (Bitmap) data.getExtras().get("data");
 //            Mat mat = cameraphoto;
 //            Mat img = imread(data.getExtras().get("data"));
-            Bitmap bmp32 = cameraphoto.copy(Bitmap.Config.ARGB_8888, true);
-            Utils.bitmapToMat(bmp32, mat);
+//            Bitmap bmp32 = cameraphoto.copy(Bitmap.Config.ARGB_8888, true);
+//            Utils.bitmapToMat(bmp32, mat);
 
             imagetocrop2 = cameraphoto;
             image.setImageBitmap(cameraphoto);
 
             imagetocrop = new BitmapDrawable(getResources(), cameraphoto);
-            double[] rgb ;
-            for (int i=0; i<mat.rows(); i++){
-                for (int j =0 ; j< mat.cols(); j++){
-                    rgb = mat.get(i,j);
-                    Log.d("rgb", "onActivityResult: see rgb mat  "+ rgb[0]+"  "+ rgb[1]+"  "+ rgb[2]);
-                    Log.d("seemat", "onActivityResult: mat item is "+ mat.get(i,j).hashCode());
-                }
-            }
+//            List<double[]> cols = new List<double[]>();
+//            List<double[]> rows = new List<double[]>();
+            ArrayList cols = new ArrayList();
+            ArrayList rows = new ArrayList();
 
-//            double[] colors = imagetocrop.get(123, 123);
+//            double[] rgb;
+//            for (int i = 0; i < mat.rows(); i++) {
+//                for (int j = 0; j < mat.cols(); j++) {
+//                    rgb = mat.get(i, j);
+//                    Log.d("rgb", "onActivityResult: see rgb mat  " + rgb[0] + "  " + rgb[1] + "  " + rgb[2]+ "  " + rgb[3]);
+//                    cols.add(rgb);
+////                    Log.d("seemat", "onActivityResult: mat item is "+ mat.get(i,j).hashCode());
+//                }
+//                rows.add(cols);
+//            }
+//
+//            for (int i =0; i<cols.size(); i++){
+////                for (int j =0 ; j<rows.size(); j++){
+//                    Log.d("see cols", "onActivityResult: see data  " + cols.get(i) );
+////                }
+//            }
+            //            double[] colors = imagetocrop.get(123, 123);
 //            Log.v(tag, "-->"+ colors[0] +";"+ colors[1] +";"+ colors[2] +"");
 //            Canvas canvas = new Canvas(cameraphoto);
 //            canvas.drawColor(Color.RED); // now all bitmap pixels became red
@@ -464,7 +592,9 @@ public class MainActivity extends AppCompatActivity {
 
 
         }
-        if (reqCode == RESULT_OK) {
+        if (reqCode == RESULT_OK)
+
+        {
             try {
                 final Uri imageUri = data.getData();
                 final InputStream imageStream = getContentResolver().openInputStream(imageUri);
@@ -480,7 +610,9 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "Something went wrong", Toast.LENGTH_LONG).show();
             }
 
-        } else {
+        } else
+
+        {
             Toast.makeText(MainActivity.this, "You haven't picked Image", Toast.LENGTH_LONG).show();
         }
     }

@@ -1,6 +1,9 @@
 package me.littlecheesecake.cropimagelayout;
 
+import org.opencv.core.Mat;
+
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -17,8 +20,8 @@ public interface RequestInterface {
 //    @GET("learn/list_of_songs.php")
 //    Call<List<Song>> getSongList();
 
-
     @Headers({
+            "content-type: application/json",
             "Content-Type: application/json"
 
     })
@@ -42,9 +45,13 @@ public interface RequestInterface {
 
     @POST("detect")
 //    Call<getstringresponse> callcontent(@Header("Authorization") String authorization, @Body RequestModel requestModel);
-    Call<String> callcontent(@Body ArrayList pixelaaray);
+    Call<String> callcontent(@Body Mat mat);
 
 
+    @POST("detect")
+//    Call<getstringresponse> callcontent(@Header("Authorization") String authorization, @Body RequestModel requestModel);
+    Call<ArrayList> callcontent2(@Body ArrayList arrayList);
+//returns: []
 
     //@GET("users/list?sort=desc")?
 }
