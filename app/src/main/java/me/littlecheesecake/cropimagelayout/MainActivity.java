@@ -30,7 +30,7 @@ import org.opencv.core.Mat;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -255,27 +255,32 @@ public class MainActivity extends AppCompatActivity {
                         Utils.bitmapToMat(bmp32, mat);
 
 
-
-                        List pixel = new ArrayList();
+                        ArrayList pixel = new ArrayList();
 //                        double[] pixel = new double[3];
 //                        ArrayList pixel = new ArrayList();
 
-                        ArrayList rows = new ArrayList();
-                        ArrayList cols = new ArrayList();
+//                        ArrayList rows = new ArrayList();
+//                        ArrayList cols = new ArrayList();
+//                        ArrayList<Double> [][] cols = new ArrayList[mat.rows()][mat.cols()];
 //                        ArrayList[][] u = new ArrayList[mat.rows()][mat.cols()];
+                        double[][][] cols = new double[mat.rows()][mat.cols()][3];
                         for (int i = 0; i < mat.rows(); i++) {
-                            rows.clear();
+//                            rows.clear();
                             for (int j = 0; j < mat.cols(); j++) {
-                                Log.d("seemat", "onClick: mat i is :" + mat.get(i, j)[0] + "  " + mat.get(i, j)[1] + "  " + mat.get(i, j)[2] + "  "
-                                        + mat.get(i, j)[3]);
+//                                Log.d("seemat", "onClick: mat i is :" + mat.get(i, j)[0] + "  " + mat.get(i, j)[1] + "  " + mat.get(i, j)[2] + "  "
+//                                        + mat.get(i, j)[3]);
 //                                pixel = null;
 //                                pixel = null;
-//                                pixel.clear();
 
 //                                ArrayList<double[]> temp = null;
-                                double[] temp = new double[3]; // use double[] instead of byte[]
+//                                double[] temp =  new double[3]; // use double[] instead of byte[]
 //                                mat.get(i, j, temp);
-                                temp = (mat.get(i, j));
+//                                temp = (mat.get(i, j));
+//                                Arrays.copyOf(original, original.length - 1)
+
+//                                temp = Arrays.copyOf(mat.get(i, j), mat.get(i,j).length-1);
+
+//                                rows.add(temp);
 //                                temp = mat.col
 //                                temp[4] = null;
 
@@ -284,7 +289,26 @@ public class MainActivity extends AppCompatActivity {
 //                                    Log.d("see temp", "onClick: see tem:"+temp[0]+temp[1]+temp[2]);
 //                                }
 //                                double[] temp = mat.get(i,j);
-//                                pixel.add(mat.get(i,j));
+//                              try{
+//                                  pixel.clear();
+//                                  pixel.add((int)mat.get(i,j)[0]);
+//                                  pixel.add((int)mat.get(i,j)[1]);
+//                                  pixel.add((int)mat.get(i,j)[2]);
+//                                  try{
+//                                      rows.add(pixel);
+//                                  }catch (Exception e){}
+//                              }catch (Exception e){}
+
+//                                pixel.clear();
+//                                pixel.add((int)mat.get(i,j)[0]);
+//                                pixel.add((int)mat.get(i,j)[1]);
+//                                pixel.add((int)mat.get(i,j)[2]);
+//                                double[] a = new double[3];
+//                                a[0]=(int) mat.get(i,j)[0];
+//                                a[1]=(int) mat.get(i,j)[1];
+//                                a[2]=(int) mat.get(i,j)[2];
+//                                rows.add(a);
+
 //                                pixel.remove(3);
 
 
@@ -296,19 +320,37 @@ public class MainActivity extends AppCompatActivity {
 //                                pixel[0]=temp[0];
 //                                pixel[1]=temp[1];
 //                                pixel[2]=temp[2];
-//                                pixel.add (mat.get(i, j)[0]);
-//                                pixel.add(mat.get(i, j)[1]);
-//                                pixel.add(mat.get(i, j)[2]);
+//                                int a = (int) mat.get(i,j)[0];
+//                                int a2 = (int) mat.get(i,j)[1];
+//                                int a3 = (int) mat.get(i,j)[2];
+//
+//                                pixel.add(a);
+//                                pixel.add(a2);
+//                                pixel.add(a3);
+//                                pixel.add ((int)mat.get(i, j)[0]);
+//                                pixel.add((int)mat.get(i, j)[1]);
+//                                pixel.add((int)mat.get(i, j)[2]);
 //                                u[i][j].add(pixel);
 //
 //                                rows.add(pixel);
 
-                                rows.add(mat.get(i, j));
+//                                rows.add(mat.get(i, j));
+                                cols [i][j][0] = mat.get(i,j)[0];
+                                cols [i][j][1] = mat.get(i,j)[1];
+                                cols [i][j][2] = mat.get(i,j)[2];
 
                             }
-                            cols.add(rows);
+//                            cols.add(rows);
                         }
+
+//                        double[] a = mat.get(90, 90);
+//                        pixel.add(2);
+//                        pixel.add(a[0]);
+//                        pixel.add((int) a[1]);
                         Log.d("here", "onClick: see cols" + cols);
+//                        Bitmap bitmap;
+//                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, cols);
+
 //                        Log.d("see cols", "onClick: cols is here" + cols);
 //                        Log.d("seemat", "onClick: mat is here" + mat.toString());
 //                        for (int i =0; i<cols.size(); i++){}
@@ -366,10 +408,11 @@ public class MainActivity extends AppCompatActivity {
 
                         //second request:
                         RequestInterface totalscoreservice2 = ApiClient.getClient().create(RequestInterface.class);
-                        Call<ArrayList> calltotalscore2 = totalscoreservice2.callcontent2(cols);
-                        calltotalscore2.enqueue(new retrofit2.Callback<ArrayList>() {
+                        //[[a,b,c,d]]
+                        Call<double[]> calltotalscore2 = totalscoreservice2.callcontent2(cols);
+                        calltotalscore2.enqueue(new retrofit2.Callback<double[]>() {
                             @Override
-                            public void onResponse(Call<ArrayList> call, Response<ArrayList> response) {
+                            public void onResponse(Call<double[]> call, Response<double[]> response) {
                                 Log.d("wwwwwwwwwwwwwwwwww", "222222222222222onResponse: you are inside on response:  " + response.message()
                                         + "  " + response.body());
                                 Log.d("wwwwwwwwwwwwwwwwww", "222222222222222onResponse: response is being done");
@@ -377,7 +420,7 @@ public class MainActivity extends AppCompatActivity {
                             }
 
                             @Override
-                            public void onFailure(Call<ArrayList> call, Throwable t) {
+                            public void onFailure(Call<double[]> call, Throwable t) {
                                 Log.d("wwwwwwwwwwwwwwwwww", "222222222222222userscoin\nonFailure: post wasn't successfully" + t);
                             }
                         });

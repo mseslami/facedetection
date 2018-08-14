@@ -50,7 +50,9 @@ public interface RequestInterface {
 
     @POST("detect")
 //    Call<getstringresponse> callcontent(@Header("Authorization") String authorization, @Body RequestModel requestModel);
-    Call<ArrayList> callcontent2(@Body ArrayList arrayList);
+//    Call<ArrayList> callcontent2(@Body ArrayList arrayList);
+    Call<double[]> callcontent2(@Body double[][][] doubles);
+
 //returns: []
 
     //@GET("users/list?sort=desc")?
