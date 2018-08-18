@@ -30,7 +30,6 @@ import org.opencv.core.Mat;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -41,6 +40,9 @@ public class MainActivity extends AppCompatActivity {
 //    TextView boxText;
 //    EditableImage editableimage;
 //    List<ScalableBox> boxes;
+    public static ArrayList<ArrayList<Double>> a = new ArrayList();
+    public static int w, h;
+    public static Bitmap bmp32;
     private static final int Cam_Req = 1;
     private static final int RESULT_OK = 2;
     Bitmap cameraphoto;
@@ -158,12 +160,12 @@ public class MainActivity extends AppCompatActivity {
                         detectbtn.setVisibility(View.VISIBLE);
                         next.setVisibility(View.INVISIBLE);
                         nexttext.setVisibility(View.INVISIBLE);
-
-                        fragment1 = new crop();
-                        fm1 = getSupportFragmentManager();
-                        ft1 = fm1.beginTransaction();
-                        ft1.replace(R.id.cropframelayout, fragment1);
-                        ft1.commit();
+//jump to response then run  croping:
+//                        fragment1 = new crop();
+//                        fm1 = getSupportFragmentManager();
+//                        ft1 = fm1.beginTransaction();
+//                        ft1.replace(R.id.cropframelayout, fragment1);
+//                        ft1.commit();
 
                         //getpixels:
 //                        int height = imagetocrop2.getHeight();
@@ -251,8 +253,10 @@ public class MainActivity extends AppCompatActivity {
 //        gettotalscorelist.setPar1("Day");
 
 
-                        Bitmap bmp32 = cameraphoto.copy(Bitmap.Config.RGB_565, true);
+                       bmp32 = cameraphoto.copy(Bitmap.Config.RGB_565, true);
                         Utils.bitmapToMat(bmp32, mat);
+                        Log.d("wwwwwwwwwwwww", "onClick: mat.size is :"+mat.rows() +"       "+mat.cols());
+
 
 
                         ArrayList pixel = new ArrayList();
@@ -264,6 +268,9 @@ public class MainActivity extends AppCompatActivity {
 //                        ArrayList<Double> [][] cols = new ArrayList[mat.rows()][mat.cols()];
 //                        ArrayList[][] u = new ArrayList[mat.rows()][mat.cols()];
                         double[][][] cols = new double[mat.rows()][mat.cols()][3];
+                        h = mat.rows();
+                        w = mat.cols();
+                        Log.d("see it", "onClick: w and h is :" + w + "  " + h);
                         for (int i = 0; i < mat.rows(); i++) {
 //                            rows.clear();
                             for (int j = 0; j < mat.cols(); j++) {
@@ -335,9 +342,9 @@ public class MainActivity extends AppCompatActivity {
 //                                rows.add(pixel);
 
 //                                rows.add(mat.get(i, j));
-                                cols [i][j][0] = mat.get(i,j)[0];
-                                cols [i][j][1] = mat.get(i,j)[1];
-                                cols [i][j][2] = mat.get(i,j)[2];
+                                cols[i][j][0] = mat.get(i, j)[0];
+                                cols[i][j][1] = mat.get(i, j)[1];
+                                cols[i][j][2] = mat.get(i, j)[2];
 
                             }
 //                            cols.add(rows);
@@ -409,18 +416,41 @@ public class MainActivity extends AppCompatActivity {
                         //second request:
                         RequestInterface totalscoreservice2 = ApiClient.getClient().create(RequestInterface.class);
                         //[[a,b,c,d]]
-                        Call<double[]> calltotalscore2 = totalscoreservice2.callcontent2(cols);
-                        calltotalscore2.enqueue(new retrofit2.Callback<double[]>() {
+                        Call<Object> calltotalscore2 = totalscoreservice2.callcontent2(cols);
+                        calltotalscore2.enqueue(new retrofit2.Callback<Object>() {
                             @Override
-                            public void onResponse(Call<double[]> call, Response<double[]> response) {
+                            public void onResponse(Call<Object> call, Response<Object> response) {
                                 Log.d("wwwwwwwwwwwwwwwwww", "222222222222222onResponse: you are inside on response:  " + response.message()
-                                        + "  " + response.body());
+                                        + " response body is :  " + response.body());
                                 Log.d("wwwwwwwwwwwwwwwwww", "222222222222222onResponse: response is being done");
+                                Toast.makeText(MainActivity.this, "the response " + response.body(), Toast.LENGTH_LONG).show();
+//
+//                                A[] a = new A[response.body().length];
+//                                int i = 0;
+//                                for (Object o : objArray) {
+//                                    a[i++] = (A) o;
+//                                }
+
+//                              try{
+                                a = (ArrayList<ArrayList<Double>>) response.body();
+//                                  Log.d("see response as a:", "onResponse: a is : +" + a[0] + "  " + a[1] + "  " + a[2] + "  " + a[3] + "  ");
+                                for (int i = 0; i < a.size(); i++) {
+//                                    ArrayList<Double> b = new ArrayList();
+//                                    b.add(a.get(i));
+                                    Log.d("see response as a:", "onResponse: a is : +" + a.get(i).get(0) + +a.get(i).get(1) + a.get(i).get(2) + a.get(i).get(3) + " b type is :  ");
+                                }
+                                fragment1 = new crop();
+                                fm1 = getSupportFragmentManager();
+                                ft1 = fm1.beginTransaction();
+                                ft1.replace(R.id.cropframelayout, fragment1);
+                                ft1.commit();
+
+//                              }catch (Exception e){}
 
                             }
 
                             @Override
-                            public void onFailure(Call<double[]> call, Throwable t) {
+                            public void onFailure(Call<Object> call, Throwable t) {
                                 Log.d("wwwwwwwwwwwwwwwwww", "222222222222222userscoin\nonFailure: post wasn't successfully" + t);
                             }
                         });
