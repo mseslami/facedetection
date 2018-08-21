@@ -54,12 +54,12 @@
             android:layout_margin="0dp"
             android:layout_gravity="center_horizontal" />
 
-        <ImageView
-            android:layout_toRightOf="@id/box_text"
-            android:id="@+id/nextface"
-            android:layout_width="120dp"
-            android:layout_height="60dp"
-            android:src="@drawable/next2" />
+        <!--<ImageView-->
+            <!--android:layout_toRightOf="@id/box_text"-->
+            <!--android:id="@+id/nextface"-->
+            <!--android:layout_width="120dp"-->
+            <!--android:layout_height="60dp"-->
+            <!--android:src="@drawable/next2" />-->
 
 
 

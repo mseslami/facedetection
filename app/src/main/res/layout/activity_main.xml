@@ -99,6 +99,18 @@
         android:layout_height="60dp"
         android:src="@drawable/next2" />
 
+    <ImageView
+
+        android:layout_alignParentRight="true"
+        android:translationZ="2dp"
+        android:layout_toRightOf="@id/box_text"
+        android:id="@+id/backface2"
+        android:layout_width="120dp"
+        android:layout_height="60dp"
+        android:src="@drawable/next2" />
+
+
+
 
 
     <View

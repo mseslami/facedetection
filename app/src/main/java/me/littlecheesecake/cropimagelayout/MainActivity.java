@@ -97,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         final ImageView nextface = (ImageView) findViewById(R.id.nextface);
+        final ImageView backface2 = (ImageView) findViewById(R.id.backface2);
 
         final Button camerabtn = (Button) findViewById(R.id.camerabtn);
         final Button gallerybtn = (Button) findViewById(R.id.gallerybtn);
@@ -166,27 +167,27 @@ public class MainActivity extends AppCompatActivity {
                         next.setVisibility(View.INVISIBLE);
                         nexttext.setVisibility(View.INVISIBLE);
 //jump to response then run  croping:
-                        fragment1 = new crop();
-                        Bundle bundle = new Bundle();
-                        fragment1.setArguments(bundle);
-//                        bundle.putInt("x1", 10);
-//                        bundle.putInt("y1", 10);
-//                        bundle.putInt("x2", 55);
-//                        bundle.putInt("y2", 90);
-                        counter = 0;
-                        try {
-                            bundle.putInt("y1", a.get(counter).get(0).intValue());
-                            bundle.putInt("x2", a.get(counter).get(1).intValue());
-                            bundle.putInt("y2", a.get(counter).get(2).intValue());
-                            bundle.putInt("x1", a.get(counter).get(3).intValue());
-
-
-                            fm1 = getSupportFragmentManager();
-                            ft1 = fm1.beginTransaction();
-                            ft1.replace(R.id.cropframelayout, fragment1);
-                            ft1.commit();
-                        } catch (Exception e) {
-                        }
+//                        fragment1 = new crop();
+//                        Bundle bundle = new Bundle();
+//                        fragment1.setArguments(bundle);
+////                        bundle.putInt("x1", 10);
+////                        bundle.putInt("y1", 10);
+////                        bundle.putInt("x2", 55);
+////                        bundle.putInt("y2", 90);
+//                        counter = 0;
+//                        try {
+//                            bundle.putInt("y1", a.get(counter).get(0).intValue());
+//                            bundle.putInt("x2", a.get(counter).get(1).intValue());
+//                            bundle.putInt("y2", a.get(counter).get(2).intValue());
+//                            bundle.putInt("x1", a.get(counter).get(3).intValue());
+//
+//
+//                            fm1 = getSupportFragmentManager();
+//                            ft1 = fm1.beginTransaction();
+//                            ft1.replace(R.id.cropframelayout, fragment1);
+//                            ft1.commit();
+//                        } catch (Exception e) {
+//                        }
                         //getpixels:
 //                        int height = imagetocrop2.getHeight();
 //                        int width = imagetocrop2.getWidth();
@@ -271,10 +272,12 @@ public class MainActivity extends AppCompatActivity {
 //        RequestModel gettotalscorelist = new RequestModel();
 //        gettotalscorelist.setAction("GetTotalScoreList");
 //        gettotalscorelist.setPar1("Day");
-                        counter = 1;
+//                        counter = 1;
                         nextface.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
+                                counter++;
+
                                 Toast.makeText(MainActivity.this, "counnter is :" + counter, Toast.LENGTH_SHORT).show();
                                 try {
                                     fragment1 = new crop();
@@ -295,9 +298,8 @@ public class MainActivity extends AppCompatActivity {
                                     ft1.replace(R.id.cropframelayout, fragment1);
                                     ft1.commit();
                                 } catch (Exception e) {
-                                    nextface.setVisibility(View.INVISIBLE);
+//                                    nextface.setVisibility(View.INVISIBLE);
                                 }
-                                counter++;
 //                                fragment1 = new crop();
 //                                Bundle bundle = new Bundle();
 //                                fragment1.setArguments(bundle);
@@ -309,6 +311,37 @@ public class MainActivity extends AppCompatActivity {
 //                                ft1 = fm1.beginTransaction();
 //                                ft1.replace(R.id.cropframelayout, fragment1);
 //                                ft1.commit();
+
+
+                            }
+                        });
+
+
+
+
+                        backface2.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                counter--;
+
+                                Toast.makeText(MainActivity.this, "counnter is :" + counter, Toast.LENGTH_SHORT).show();
+                                try {
+                                    fragment1 = new crop();
+                                    Bundle bundle = new Bundle();
+                                    fragment1.setArguments(bundle);
+
+                                    bundle.putInt("y1", a.get(counter).get(0).intValue());
+                                    bundle.putInt("x2", a.get(counter).get(1).intValue());
+                                    bundle.putInt("y2", a.get(counter).get(2).intValue());
+                                    bundle.putInt("x1", a.get(counter).get(3).intValue());
+
+                                    fm1 = getSupportFragmentManager();
+                                    ft1 = fm1.beginTransaction();
+                                    ft1.replace(R.id.cropframelayout, fragment1);
+                                    ft1.commit();
+                                } catch (Exception e) {
+//                                    nextface.setVisibility(View.INVISIBLE);
+                                }
 
 
                             }
@@ -506,6 +539,25 @@ public class MainActivity extends AppCompatActivity {
 //                                ft1.commit();
 
 //                              }catch (Exception e){}
+                                fragment1 = new crop();
+                                Bundle bundle = new Bundle();
+                                fragment1.setArguments(bundle);
+//                        bundle.putInt("x1", 10);
+//                        bundle.putInt("y1", 10);
+//                        bundle.putInt("x2", 55);
+//                        bundle.putInt("y2", 90);
+                                counter = 0;
+                                try {
+                                    bundle.putInt("y1", a.get(counter).get(0).intValue());
+                                    bundle.putInt("x2", a.get(counter).get(1).intValue());
+                                    bundle.putInt("y2", a.get(counter).get(2).intValue());
+                                    bundle.putInt("x1", a.get(counter).get(3).intValue());
+                                    fm1 = getSupportFragmentManager();
+                                    ft1 = fm1.beginTransaction();
+                                    ft1.replace(R.id.cropframelayout, fragment1);
+                                    ft1.commit();
+                                } catch (Exception e) {
+                                }
 
                             }
 
@@ -533,6 +585,7 @@ public class MainActivity extends AppCompatActivity {
                     photoselection = false;
                     back.setVisibility(View.INVISIBLE);
                     backtext.setVisibility(View.INVISIBLE);
+                    nextface.setVisibility(View.VISIBLE);
 
                 } else if (titletxt.getText().toString().equals(STEP_2)) {
                     titletxt.setText(STEP_1);
