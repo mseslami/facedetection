@@ -1,6 +1,7 @@
 package me.littlecheesecake.cropimagelayout;
 
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -9,7 +10,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -110,10 +110,12 @@ public class crop extends Fragment {
 
             //            doit();
 
+
             imageView.setOnBoxChangedListener(new OnBoxChangedListener() {
                 @Override
                 public void onChanged(int x1, int y1, int x2, int y2) {
                     boxText.setText("box: [" + x1 + "," + y1 + "],[" + x2 + "," + y2 + "]");
+                    someMethod(x1, y1, x2, y2);
                 }
             });
 
@@ -215,5 +217,38 @@ public class crop extends Fragment {
 ////            boxText.setText("box: [" + x1 + "    " + y1 + "    " +
 ////                    x2 + "    " + y2 + "    ]");
 //        }
+
+
+    TextClicked mCallback;
+
+    public interface TextClicked {
+        public void sendText(int x1, int y1, int x2, int y2);
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        // This makes sure that the container activity has implemented
+        // the callback interface. If not, it throws an exception
+        try {
+            mCallback = (TextClicked) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement TextClicked");
+        }
+    }
+
+    public void someMethod(int x1, int y1, int x2, int y2) {
+        mCallback.sendText(x1, y1, x2, y2);
+    }
+
+    @Override
+    public void onDetach() {
+//        someMethod();
+        mCallback = null; // => avoid leaking, thanks @Deepscorn
+        super.onDetach();
+    }
+
 
 }

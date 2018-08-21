@@ -34,7 +34,7 @@ import java.util.ArrayList;
 import retrofit2.Call;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements crop.TextClicked{
 
     //    EditPhotoView imageView;
 //    TextView boxText;
@@ -316,6 +316,24 @@ public class MainActivity extends AppCompatActivity {
                             }
                         });
 
+
+                        try {
+                            fragment1 = new crop();
+                            Bundle bundle = new Bundle();
+                            fragment1.setArguments(bundle);
+
+                            bundle.putInt("y1", 4);
+                            bundle.putInt("x2",44);
+                            bundle.putInt("y2", 40);
+                            bundle.putInt("x1",5);
+
+                            fm1 = getSupportFragmentManager();
+                            ft1 = fm1.beginTransaction();
+                            ft1.replace(R.id.cropframelayout, fragment1);
+                            ft1.commit();
+                        } catch (Exception e) {
+//                                    nextface.setVisibility(View.INVISIBLE);
+                        }
 
 
 
@@ -665,6 +683,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+
+
+
+
     }
 
 
@@ -804,4 +827,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void sendText(int x1, int y1, int x2, int y2) {
+        Log.d("pppppppppp", "sendText:  "+x1+"    "+y1+"    "+x2+"    "+y2);
+    }
 }
