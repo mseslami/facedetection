@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,7 +23,6 @@ import me.littlecheesecake.croplayout.model.ScalableBox;
 
 import static me.littlecheesecake.cropimagelayout.MainActivity.a;
 import static me.littlecheesecake.cropimagelayout.MainActivity.bmp32;
-import static me.littlecheesecake.cropimagelayout.MainActivity.imagetocrop2;
 
 
 /**
@@ -30,6 +30,13 @@ import static me.littlecheesecake.cropimagelayout.MainActivity.imagetocrop2;
  */
 public class crop extends Fragment {
 
+    boolean nextfaceb;
+    static public int x1, x2, y1, y2;
+    static ScalableBox box1, box2, box3;
+    static List<ScalableBox> boxes;
+    static EditableImage image;
+    int facecount;
+    EditPhotoView imageView;
 
     public crop() {
         // Required empty public constructor
@@ -50,58 +57,58 @@ public class crop extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
 
-        final EditPhotoView imageView = (EditPhotoView) getView().findViewById(R.id.editable_image);
+        imageView = (EditPhotoView) getView().findViewById(R.id.editable_image);
         final TextView boxText = (TextView) getView().findViewById(R.id.box_text);
-//        final EditableImage image = new EditableImage(getActivity(), R.drawable.photo2);
+        final TextView boxText2 = (TextView) getView().findViewById(R.id.box_text2);
+        final TextView boxText3 = (TextView) getView().findViewById(R.id.box_text3);
+        ImageView nextface = (ImageView) getView().findViewById(R.id.nextface);
+
+        boxText2.setText(a.size() + " FACES ARE FOUND");
+        //        final EditableImage image = new EditableImage(getActivity(), R.drawable.photo2);
 
         for (int i = 0; i < a.size(); i++) {
             Log.d("see response as a:", "onResponse: crop crop a is : +" + a.get(i).get(0) + +a.get(i).get(1) + a.get(i).get(2) + a.get(i).get(3) + " b type is :  ");
         }
-        final EditableImage image = new EditableImage(bmp32);
+        image = new EditableImage(bmp32);
 //        ScalableBox box1 = new ScalableBox(25, 10, 640, 80);
 //        ScalableBox box2 = new ScalableBox(2, 18, 680, 80);
 //        ScalableBox box3 = new ScalableBox(250, 80, 400, 80);
 
-
-        try{
-
-//            ScalableBox box1 = new ScalableBox(a.get(0).get(0).intValue(), a.get(0).get(1).intValue(),
-//                    a.get(0).get(0).intValue()+a.get(0).get(2).intValue(), a.get(0).get(1).intValue()+a.get(0).get(3).intValue());
-
-//            Log.d("wwwwwwwwwww", "onViewCreated: "+a.get(0).get(0).intValue()+"         "+ a.get(0).get(1).intValue()+"         "+
-//                    a.get(0).get(2).intValue()+a.get(0).get(0).intValue()+"         "+ a.get(0).get(1).intValue()+a.get(0).get(3).intValue());
+        facecount = a.size();
+        nextfaceb = true;
 
 
-            int y1 = a.get(0).get(0).intValue();
-            int x2 = a.get(0).get(1).intValue();
-            int y2 = a.get(0).get(2).intValue();
-            int x1 = a.get(0).get(3).intValue();
+        boxText3.setText("cropint " + (a.size() - facecount + 1) + "th face");
+//        String strtext = getArguments().getString("edttext");
 
-            ScalableBox box1 = new ScalableBox(x1,y1,x2,y2);
+        try {
+//            y1 = a.get(facecount - 1).get(0).intValue();
+//            x2 = a.get(facecount - 1).get(1).intValue();
+//            y2 = a.get(facecount - 1).get(2).intValue();
+//            x1 = a.get(facecount - 1).get(3).intValue();
 
-            //            ScalableBox box2 = new ScalableBox(a.get(0).get(0).intValue(), a.get(0).get(1).intValue(),
-//                    a.get(0).get(0).intValue()+a.get(0).get(2).intValue(), a.get(0).get(1).intValue()+a.get(0).get(3).intValue());
-//            ScalableBox box3 = new ScalableBox(a.get(0).get(0).intValue(), a.get(0).get(1).intValue(),
-//                    a.get(0).get(0).intValue()+a.get(0).get(2).intValue(), a.get(0).get(1).intValue()+a.get(0).get(3).intValue());
+            y1 = getArguments().getInt("y1");
+            x2 = getArguments().getInt("x2");
+            y2 = getArguments().getInt("y2");
+            x1 = getArguments().getInt("x1");
 
 
-//            ScalableBox box1 = new ScalableBox(20, 30, 200, 100);
-            ScalableBox box2 = new ScalableBox(0, 0, 0, 0);
-            ScalableBox box3 = new ScalableBox(0, 0, 0, 0);
+            box1 = new ScalableBox(x1, y1, x2, y2);
+            box2 = new ScalableBox(0, 0, 0, 0);
+            box3 = new ScalableBox(0, 0, 0, 0);
 
-            List<ScalableBox> boxes = new ArrayList<>();
+            boxes = new ArrayList<>();
             boxes.add(box1);
             boxes.add(box2);
             boxes.add(box3);
             image.setBoxes(boxes);
             imageView.initView(getActivity(), image);
-//
-//            boxText.setText("box: ["+a.get(0).get(0).intValue()+"    "+ a.get(0).get(1).intValue()+"    "+
-//                    (int)(a.get(0).get(0).intValue()+a.get(0).get(2).intValue())+"    "+(int)( a.get(0).get(1).intValue()+a.get(0).get(3).intValue())+"    ]");
+
+            boxText.setText("box: [" + x1 + "    " + y1 + "    " +
+                    x2 + "    " + y2 + "    ]");
 
 
-            boxText.setText("box: ["+x1+"    "+ y1+"    "+
-                    x2+"    "+y2+"    ]");
+            //            doit();
 
             imageView.setOnBoxChangedListener(new OnBoxChangedListener() {
                 @Override
@@ -110,12 +117,103 @@ public class crop extends Fragment {
                 }
             });
 
-        }catch (Exception e ){
+        } catch (Exception e) {
             Toast.makeText(getActivity(), "no fase is found :(", Toast.LENGTH_SHORT).show();
         }
 
 
+        nextface.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+//                doit();
+//
+//                y1 = 83;
+//                x2 = 144;
+//                y2 = 116;
+//                x1 = 80;
+//
+//
+//                box1 = new ScalableBox(x1, y1, x2, y2);
+//                box2 = new ScalableBox(0, 0, 0, 0);
+//                box3 = new ScalableBox(0, 0, 0, 0);
+//
+//                boxes = new ArrayList<>();
+//                boxes.add(box1);
+//                boxes.add(box2);
+//                boxes.add(box3);
+//                image.setBoxes(boxes);
+////                imageView.initView(getActivity(), image);
+//                imageView.initView(getContext(),image);
+//
+//                boxText.setText("box: [" + x1 + "    " + y1 + "    " +
+//                        x2 + "    " + y2 + "    ]");
+
+            }
+        });
+
+
+//        for (int i =0 ; i<a.size(); i++){
+//
+//        }
+
+//        try {
+//            int y1 = a.get(0).get(0).intValue();
+//            int x2 = a.get(0).get(1).intValue();
+//            int y2 = a.get(0).get(2).intValue();
+//            int x1 = a.get(0).get(3).intValue();
+//
+//            ScalableBox box1 = new ScalableBox(x1, y1, x2, y2);
+//           ScalableBox box2 = new ScalableBox(0, 0, 0, 0);
+//            ScalableBox box3 = new ScalableBox(0, 0, 0, 0);
+//
+//            List<ScalableBox> boxes = new ArrayList<>();
+//            boxes.add(box1);
+//            boxes.add(box2);
+//            boxes.add(box3);
+//            image.setBoxes(boxes);
+//            imageView.initView(getActivity(), image);
+//
+//            boxText.setText("box: [" + x1 + "    " + y1 + "    " +
+//                    x2 + "    " + y2 + "    ]");
+//
+//            imageView.setOnBoxChangedListener(new OnBoxChangedListener() {
+//                @Override
+//                public void onChanged(int x1, int y1, int x2, int y2) {
+//                    boxText.setText("box: [" + x1 + "," + y1 + "],[" + x2 + "," + y2 + "]");
+//                }
+//            });
+//
+//        } catch (Exception e) {
+//            Toast.makeText(getActivity(), "no fase is found :(", Toast.LENGTH_SHORT).show();
+//        }
+
+
     }
 
+
+//        public  void doit(){
+//
+//            y1 = 83;
+//            x2 = 144;
+//            y2 = 116;
+//            x1 = 80;
+//
+//
+//            box1 = new ScalableBox(x1, y1, x2, y2);
+//            box2 = new ScalableBox(0, 0, 0, 0);
+//            box3 = new ScalableBox(0, 0, 0, 0);
+//
+//            boxes = new ArrayList<>();
+//            boxes.add(box1);
+//            boxes.add(box2);
+//            boxes.add(box3);
+//            image.setBoxes(boxes);
+////                imageView.initView(getActivity(), image);
+//            imageView.initView(getActivity(),image);
+//
+////            boxText.setText("box: [" + x1 + "    " + y1 + "    " +
+////                    x2 + "    " + y2 + "    ]");
+//        }
 
 }

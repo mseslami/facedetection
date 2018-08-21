@@ -91,8 +91,17 @@
             android:textSize="10dp"
             android:text="Detect" />
 
+    <ImageView
+        android:translationZ="2dp"
+        android:layout_toRightOf="@id/box_text"
+        android:id="@+id/nextface"
+        android:layout_width="120dp"
+        android:layout_height="60dp"
+        android:src="@drawable/next2" />
 
-        <View
+
+
+    <View
             android:id="@+id/centerdot"
             android:layout_width="0dp"
             android:layout_height="0dp"
