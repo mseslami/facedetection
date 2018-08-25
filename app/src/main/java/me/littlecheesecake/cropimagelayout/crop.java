@@ -92,6 +92,11 @@ public class crop extends Fragment {
             y2 = getArguments().getInt("y2");
             x1 = getArguments().getInt("x1");
 
+//            y1 = 19;
+//            x2 = 220;
+//            y2 = 90;
+//            x1 = 10;
+
 
             box1 = new ScalableBox(x1, y1, x2, y2);
             box2 = new ScalableBox(0, 0, 0, 0);

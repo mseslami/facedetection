@@ -34,7 +34,7 @@ import java.util.ArrayList;
 import retrofit2.Call;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity implements crop.TextClicked{
+public class MainActivity extends AppCompatActivity implements crop.TextClicked {
 
     //    EditPhotoView imageView;
 //    TextView boxText;
@@ -323,9 +323,9 @@ public class MainActivity extends AppCompatActivity implements crop.TextClicked{
                             fragment1.setArguments(bundle);
 
                             bundle.putInt("y1", 4);
-                            bundle.putInt("x2",44);
+                            bundle.putInt("x2", 44);
                             bundle.putInt("y2", 40);
-                            bundle.putInt("x1",5);
+                            bundle.putInt("x1", 5);
 
                             fm1 = getSupportFragmentManager();
                             ft1 = fm1.beginTransaction();
@@ -334,7 +334,6 @@ public class MainActivity extends AppCompatActivity implements crop.TextClicked{
                         } catch (Exception e) {
 //                                    nextface.setVisibility(View.INVISIBLE);
                         }
-
 
 
                         backface2.setOnClickListener(new View.OnClickListener() {
@@ -370,7 +369,7 @@ public class MainActivity extends AppCompatActivity implements crop.TextClicked{
                         Log.d("wwwwwwwwwwwww", "onClick: mat.size is :" + mat.rows() + "       " + mat.cols());
 
 
-                        ArrayList pixel = new ArrayList();
+//                        ArrayList pixel = new ArrayList();
 //                        double[] pixel = new double[3];
 //                        ArrayList pixel = new ArrayList();
 
@@ -684,10 +683,6 @@ public class MainActivity extends AppCompatActivity implements crop.TextClicked{
         });
 
 
-
-
-
-
     }
 
 
@@ -829,6 +824,127 @@ public class MainActivity extends AppCompatActivity implements crop.TextClicked{
 
     @Override
     public void sendText(int x1, int y1, int x2, int y2) {
-        Log.d("pppppppppp", "sendText:  "+x1+"    "+y1+"    "+x2+"    "+y2);
+        Log.d("sendingcropedimage", "sendText:  " + x1 + "    " + y1 + "    " + x2 + "    " + y2);
+
+        bmp32 = cameraphoto.copy(Bitmap.Config.RGB_565, true);
+        Utils.bitmapToMat(bmp32, mat);
+        Log.d("sendingcropedimage", "sendText: mat array is :"+mat.rows() + "   "+mat.cols());
+
+        double[][][] cols = new double[1000][1000][3];
+//        cols[1][1][0] = mat.get(80, 90)[0];
+//        cols[2][2][1] = mat.get(22, 33)[1];
+//        cols[3][4][2] = mat.get(11, 43)[2];
+
+//        h = mat.rows();
+//        w = mat.cols();
+//        Log.d("see it", "onClick: w and h is :" + w + "  " + h);
+        for (int i = y1 ; i < y2-2; i++) {
+//                            rows.clear();
+            for (int j = x1 ; j < x2-2; j++) {
+//                                Log.d("seemat", "onClick: mat i is :" + mat.get(i, j)[0] + "  " + mat.get(i, j)[1] + "  " + mat.get(i, j)[2] + "  "
+//                                        + mat.get(i, j)[3]);
+//                                pixel = null;
+//                                pixel = null;
+
+//                                ArrayList<double[]> temp = null;
+//                                double[] temp =  new double[3]; // use double[] instead of byte[]
+//                                mat.get(i, j, temp);
+//                                temp = (mat.get(i, j));
+//                                Arrays.copyOf(original, original.length - 1)
+
+//                                temp = Arrays.copyOf(mat.get(i, j), mat.get(i,j).length-1);
+
+//                                rows.add(temp);
+//                                temp = mat.col
+//                                temp[4] = null;
+
+
+//                                if (temp[0]!= 0.0){
+//                                    Log.d("see temp", "onClick: see tem:"+temp[0]+temp[1]+temp[2]);
+//                                }
+//                                double[] temp = mat.get(i,j);
+//                              try{
+//                                  pixel.clear();
+//                                  pixel.add((int)mat.get(i,j)[0]);
+//                                  pixel.add((int)mat.get(i,j)[1]);
+//                                  pixel.add((int)mat.get(i,j)[2]);
+//                                  try{
+//                                      rows.add(pixel);
+//                                  }catch (Exception e){}
+//                              }catch (Exception e){}
+
+//                                pixel.clear();
+//                                pixel.add((int)mat.get(i,j)[0]);
+//                                pixel.add((int)mat.get(i,j)[1]);
+//                                pixel.add((int)mat.get(i,j)[2]);
+//                                double[] a = new double[3];
+//                                a[0]=(int) mat.get(i,j)[0];
+//                                a[1]=(int) mat.get(i,j)[1];
+//                                a[2]=(int) mat.get(i,j)[2];
+//                                rows.add(a);
+
+//                                pixel.remove(3);
+
+
+//                                pixel.add(temp[0]);
+//                                pixel.add(temp[1]);
+//                                pixel.add(temp[2]);
+
+//                                pixel.add(temp );
+//                                pixel[0]=temp[0];
+//                                pixel[1]=temp[1];
+//                                pixel[2]=temp[2];
+//                                int a = (int) mat.get(i,j)[0];
+//                                int a2 = (int) mat.get(i,j)[1];
+//                                int a3 = (int) mat.get(i,j)[2];
+//
+//                                pixel.add(a);
+//                                pixel.add(a2);
+//                                pixel.add(a3);
+//                                pixel.add ((int)mat.get(i, j)[0]);
+//                                pixel.add((int)mat.get(i, j)[1]);
+//                                pixel.add((int)mat.get(i, j)[2]);
+//                                u[i][j].add(pixel);
+//
+//                                rows.add(pixel);
+
+//                                rows.add(mat.get(i, j));
+                cols[i][j][0] = mat.get(i, j)[0];
+                cols[i][j][1] = mat.get(i, j)[1];
+                cols[i][j][2] = mat.get(i, j)[2];
+
+            }
+//                            cols.add(rows);
+        }
+
+
+        RequestInterface totalscoreservice2 = ApiClient.getClient().create(RequestInterface.class);
+        Call<Object> calltotalscore2 = totalscoreservice2.callcontent2(cols);
+        Log.d("sendingcropedimage", "sendingcropedimage request is going to be sent ");
+
+        calltotalscore2.enqueue(new retrofit2.Callback<Object>() {
+            @Override
+            public void onResponse(Call<Object> call, Response<Object> response) {
+                Log.d("sendingcropedimage", "sendingcropedimage222222222222222onResponse: you are inside on response:  " + response.message()
+                        + " response body is :  " + response.body());
+                Log.d("sendingcropedimage", "sendingcropedimage222222222222222onResponse: response is being done");
+                Toast.makeText(MainActivity.this, "the response " + response.body(), Toast.LENGTH_LONG).show();
+
+//                a = (ArrayList<ArrayList<Double>>) response.body();
+////                                  Log.d("see response as a:", "onResponse: a is : +" + a[0] + "  " + a[1] + "  " + a[2] + "  " + a[3] + "  ");
+//                for (int i = 0; i < a.size(); i++) {
+////                                    ArrayList<Double> b = new ArrayList();
+////                                    b.add(a.get(i));
+//                    Log.d("see response as a:", "onResponse: a is : +" + a.get(i).get(0) + +a.get(i).get(1) + a.get(i).get(2) + a.get(i).get(3) + " b type is :  ");
+//                }
+            }
+
+            @Override
+            public void onFailure(Call<Object> call, Throwable t) {
+                Log.d("sendingcropedimage", "sendingcropedimage222222222222222userscoin\nonFailure: post wasn't successfully" + t);
+            }
+        });
+
+
     }
 }
