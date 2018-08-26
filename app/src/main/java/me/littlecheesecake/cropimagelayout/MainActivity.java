@@ -544,11 +544,11 @@ public class MainActivity extends AppCompatActivity implements crop.TextClicked 
 //                              try{
                                 a = (ArrayList<ArrayList<Double>>) response.body();
 //                                  Log.d("see response as a:", "onResponse: a is : +" + a[0] + "  " + a[1] + "  " + a[2] + "  " + a[3] + "  ");
-                                for (int i = 0; i < a.size(); i++) {
-//                                    ArrayList<Double> b = new ArrayList();
-//                                    b.add(a.get(i));
-                                    Log.d("see response as a:", "onResponse: a is : +" + a.get(i).get(0) + +a.get(i).get(1) + a.get(i).get(2) + a.get(i).get(3) + " b type is :  ");
-                                }
+//                                for (int i = 0; i < a.size(); i++) {
+////                                    ArrayList<Double> b = new ArrayList();
+////                                    b.add(a.get(i));
+//                                    Log.d("see response as a:", "onResponse: a is : +" + a.get(i).get(0) + +a.get(i).get(1) + a.get(i).get(2) + a.get(i).get(3) + " b type is :  ");
+//                                }
 //                                fragment1 = new crop();
 //                                fm1 = getSupportFragmentManager();
 //                                ft1 = fm1.beginTransaction();
@@ -828,9 +828,9 @@ public class MainActivity extends AppCompatActivity implements crop.TextClicked 
 
         bmp32 = cameraphoto.copy(Bitmap.Config.RGB_565, true);
         Utils.bitmapToMat(bmp32, mat);
-        Log.d("sendingcropedimage", "sendText: mat array is :"+mat.rows() + "   "+mat.cols());
+        Log.d("sendingcropedimage", "sendText: mat array is :" + mat.rows() + "   " + mat.cols());
 
-        double[][][] cols = new double[1000][1000][3];
+        double[][][] cols = new double[y2 - y1 ][x2 - x1 ][3];
 //        cols[1][1][0] = mat.get(80, 90)[0];
 //        cols[2][2][1] = mat.get(22, 33)[1];
 //        cols[3][4][2] = mat.get(11, 43)[2];
@@ -838,9 +838,9 @@ public class MainActivity extends AppCompatActivity implements crop.TextClicked 
 //        h = mat.rows();
 //        w = mat.cols();
 //        Log.d("see it", "onClick: w and h is :" + w + "  " + h);
-        for (int i = y1 ; i < y2-2; i++) {
+        for (int i = y1 , o = 0; o < y2 - y1  && i < y2; o++, i++) {
 //                            rows.clear();
-            for (int j = x1 ; j < x2-2; j++) {
+            for (int j = x1 , p = 0; p < x2 - x1  && j < x2; p++, j++) {
 //                                Log.d("seemat", "onClick: mat i is :" + mat.get(i, j)[0] + "  " + mat.get(i, j)[1] + "  " + mat.get(i, j)[2] + "  "
 //                                        + mat.get(i, j)[3]);
 //                                pixel = null;
@@ -909,9 +909,9 @@ public class MainActivity extends AppCompatActivity implements crop.TextClicked 
 //                                rows.add(pixel);
 
 //                                rows.add(mat.get(i, j));
-                cols[i][j][0] = mat.get(i, j)[0];
-                cols[i][j][1] = mat.get(i, j)[1];
-                cols[i][j][2] = mat.get(i, j)[2];
+                cols[o][p][0] = mat.get(i, j)[0];
+                cols[o][p][1] = mat.get(i, j)[1];
+                cols[o][p][2] = mat.get(i, j)[2];
 
             }
 //                            cols.add(rows);
