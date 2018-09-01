@@ -1,5 +1,15 @@
 package me.littlecheesecake.cropimagelayout;
 
+import android.os.Bundle;
+import android.app.Activity;
+import android.content.Intent;
+import android.view.Menu;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.view.View;
+
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -12,9 +22,11 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,10 +42,12 @@ import org.opencv.core.Mat;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Response;
+
 
 public class MainActivity extends AppCompatActivity implements crop.TextClicked {
 
@@ -57,6 +71,7 @@ public class MainActivity extends AppCompatActivity implements crop.TextClicked 
     boolean photoselection = false;
     //    BitmapDrawable imagetocrop;
     public static Drawable imagetocrop;
+    ListView suspectslistview;
 
     FragmentTransaction ft1;
     FragmentManager fm1;
@@ -99,6 +114,7 @@ public class MainActivity extends AppCompatActivity implements crop.TextClicked 
 
         final ImageView nextface = (ImageView) findViewById(R.id.nextface);
         final ImageView backface2 = (ImageView) findViewById(R.id.backface2);
+        suspectslistview = (ListView) findViewById(R.id.listview);
 
         final Button camerabtn = (Button) findViewById(R.id.camerabtn);
         final Button gallerybtn = (Button) findViewById(R.id.gallerybtn);
@@ -119,6 +135,20 @@ public class MainActivity extends AppCompatActivity implements crop.TextClicked 
         titletxt.setText(STEP_1);
         nextface.setVisibility(View.VISIBLE);
         image.setImageDrawable(getResources().getDrawable(R.drawable.anonymous));
+        String[] SamsungPhones = new String[] { "Galaxy S", "Galaxy S2",
+                "Galaxy Note", "Galaxy Beam", "Galaxy Ace Plus", "Galaxy S3",
+                "Galaxy S Advance", "Galaxy Wave 3", "Galaxy Wave Y",
+                "Galaxy Nexus", "Galaxy W", "Galaxy Y", "Galaxy Mini",
+                "Galaxy Gio", "Galaxy Wave", "Galaxy Wave 2" };
+
+        // Locate ListView in listview_main.xml
+        suspectslistview = (ListView) findViewById(R.id.listview);
+
+        // Bind array strings into an adapter
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(),
+                android.R.layout.simple_list_item_1, android.R.id.text1,
+                SamsungPhones);
+        suspectslistview.setAdapter(adapter);
 //        mat = new Mat();
 //crop
 
@@ -853,7 +883,7 @@ public class MainActivity extends AppCompatActivity implements crop.TextClicked 
         Utils.bitmapToMat(bmp32, mat);
         Log.d("sendingcropedimage", "sendText: mat array is :" + mat.rows() + "   " + mat.cols());
 
-        double[][][] cols = new double[y2 - y1 ][x2 - x1 ][3];
+        double[][][] cols = new double[y2 - y1][x2 - x1][3];
 //        cols[1][1][0] = mat.get(80, 90)[0];
 //        cols[2][2][1] = mat.get(22, 33)[1];
 //        cols[3][4][2] = mat.get(11, 43)[2];
@@ -861,9 +891,9 @@ public class MainActivity extends AppCompatActivity implements crop.TextClicked 
 //        h = mat.rows();
 //        w = mat.cols();
 //        Log.d("see it", "onClick: w and h is :" + w + "  " + h);
-        for (int i = y1 , o = 0; o < y2 - y1  && i < y2; o++, i++) {
+        for (int i = y1, o = 0; o < y2 - y1 && i < y2; o++, i++) {
 //                            rows.clear();
-            for (int j = x1 , p = 0; p < x2 - x1  && j < x2; p++, j++) {
+            for (int j = x1, p = 0; p < x2 - x1 && j < x2; p++, j++) {
 //                                Log.d("seemat", "onClick: mat i is :" + mat.get(i, j)[0] + "  " + mat.get(i, j)[1] + "  " + mat.get(i, j)[2] + "  "
 //                                        + mat.get(i, j)[3]);
 //                                pixel = null;
@@ -950,13 +980,34 @@ public class MainActivity extends AppCompatActivity implements crop.TextClicked 
             public void onResponse(Call<Object> call, Response<Object> response) {
                 Log.d("sendingcropedimage", "sendingcropedimage222222222222222onResponse: you are inside on response:  " + response.message()
                         + " response body is :  " + response.body());
-                List<List> suspects = new ArrayList();
-                suspects = (List<List>) response.body();
-                Log.d("sendingcropedimage", "onResponse: "+ suspects.get(0).get(0));
 
-                Log.d("sendingcropedimage", "sendingcropedimage222222222222222onResponse: response is being done");
-                Toast.makeText(MainActivity.this, "the response " + response.body(), Toast.LENGTH_LONG).show();
+                if (response.body() != null){
+                    try {
+                        List<List> suspects = new ArrayList();
+                        suspects = (List<List>) response.body();
+//                Log.d("sendingcropedimage", "onResponse: " + suspects.get(0).get(0));
 
+                        Log.d("sendingcropedimage", "sendingcropedimage222222222222222onResponse: response is being done");
+                        Toast.makeText(MainActivity.this, "the response " + response.body(), Toast.LENGTH_LONG).show();
+
+                        String[] values = new String[suspects.size()];
+//                values[0] = String.valueOf(suspects.get(0));
+                        for (int i=0 ; i<suspects.size(); i++){
+                            values[i]= String.valueOf(suspects.get(i).get(0))+ "\n"+ String.valueOf(suspects.get(i).get(1));
+
+                        }
+                        suspectslistview = (ListView) findViewById(R.id.listview);
+
+                        // Bind array strings into an adapter
+                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(),
+                                android.R.layout.simple_list_item_1, android.R.id.text1,
+                                values);
+                        suspectslistview.setAdapter(adapter);
+                        suspectslistview.setVisibility(View.VISIBLE);
+
+
+                    }catch (Exception e){}
+                }
 //                a = (ArrayList<ArrayList<Double>>) response.body();
 ////                                  Log.d("see response as a:", "onResponse: a is : +" + a[0] + "  " + a[1] + "  " + a[2] + "  " + a[3] + "  ");
 //                for (int i = 0; i < a.size(); i++) {
