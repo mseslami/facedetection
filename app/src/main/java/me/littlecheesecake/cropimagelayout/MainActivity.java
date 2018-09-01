@@ -30,6 +30,7 @@ import org.opencv.core.Mat;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -147,6 +148,28 @@ public class MainActivity extends AppCompatActivity implements crop.TextClicked 
 //                    boxText.setText("box: [" + x1 + "," + y1 + "],[" + x2 + "," + y2 + "]");
 //                }
 //            });
+
+
+        //get all faces:
+//        RequestInterface totalscoreservice2 = ApiClient.getClient().create(RequestInterface.class);
+//        Call<List<String>> calltotalscore2 = totalscoreservice2.getallfaces();
+//        Log.d("getallfaces", "getallfaces request is going to be sent ");
+//
+//        calltotalscore2.enqueue(new retrofit2.Callback<List<String>>() {
+//            @Override
+//            public void onResponse(Call<List<String>> call, Response<List<String>> response) {
+//                Log.d("getallfaces", " getallfaces  onResponse: you are inside on response:  " + response.message()
+//                        + " response body is :  " + response.body());
+////                Log.d("sendingcropedimage", "sendingcropedimage222222222222222onResponse: response is being done");
+//                Toast.makeText(MainActivity.this, "getallfaces the response " + response.body(), Toast.LENGTH_LONG).show();
+//
+//            }
+//
+//            @Override
+//            public void onFailure(Call<List<String>> call, Throwable t) {
+//                Log.d("getallfaces", "getallfaces \nonFailure: post wasn't successfully" + t);
+//            }
+//        });
 
 
         next.setOnClickListener(new View.OnClickListener() {
@@ -919,7 +942,7 @@ public class MainActivity extends AppCompatActivity implements crop.TextClicked 
 
 
         RequestInterface totalscoreservice2 = ApiClient.getClient().create(RequestInterface.class);
-        Call<Object> calltotalscore2 = totalscoreservice2.callcontent2(cols);
+        Call<Object> calltotalscore2 = totalscoreservice2.callrecognize(cols);
         Log.d("sendingcropedimage", "sendingcropedimage request is going to be sent ");
 
         calltotalscore2.enqueue(new retrofit2.Callback<Object>() {
@@ -927,6 +950,10 @@ public class MainActivity extends AppCompatActivity implements crop.TextClicked 
             public void onResponse(Call<Object> call, Response<Object> response) {
                 Log.d("sendingcropedimage", "sendingcropedimage222222222222222onResponse: you are inside on response:  " + response.message()
                         + " response body is :  " + response.body());
+                List<List> suspects = new ArrayList();
+                suspects = (List<List>) response.body();
+                Log.d("sendingcropedimage", "onResponse: "+ suspects.get(0).get(0));
+
                 Log.d("sendingcropedimage", "sendingcropedimage222222222222222onResponse: response is being done");
                 Toast.makeText(MainActivity.this, "the response " + response.body(), Toast.LENGTH_LONG).show();
 

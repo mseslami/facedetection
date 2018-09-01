@@ -7,6 +7,7 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
@@ -43,15 +44,17 @@ public interface RequestInterface {
 //    @POST("new_post.php")
 //    Call<MyResponseBody> newuser(@Field("getuserdata") String  getuserdata);
 
-    @POST("detect")
-//    Call<getstringresponse> callcontent(@Header("Authorization") String authorization, @Body RequestModel requestModel);
-    Call<String> callcontent(@Body Mat mat);
-
 
     @POST("detect")
 //    Call<getstringresponse> callcontent(@Header("Authorization") String authorization, @Body RequestModel requestModel);
 //    Call<ArrayList> callcontent2(@Body ArrayList arrayList);
     Call<Object> callcontent2(@Body double[][][] doubles);
+
+    @POST("recognize")
+    Call<Object> callrecognize(@Body double[][][] doubles);
+
+    @GET("")
+    Call<List<String>> getallfaces();
 
 //returns: []
 
