@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements crop.TextClicked 
     private static final int Cam_Req = 1;
     private static final int RESULT_OK = 2;
     Bitmap cameraphoto;
+    Button searchsomeone;
     Bitmap selectedImage;
     public static Bitmap imagetocrop2;
     static String datatopost;
@@ -115,6 +116,7 @@ public class MainActivity extends AppCompatActivity implements crop.TextClicked 
         final ImageView nextface = (ImageView) findViewById(R.id.nextface);
         final ImageView backface2 = (ImageView) findViewById(R.id.backface2);
         suspectslistview = (ListView) findViewById(R.id.listview);
+        searchsomeone = (Button) findViewById(R.id.searchsomeone);
 
         final Button camerabtn = (Button) findViewById(R.id.camerabtn);
         final Button gallerybtn = (Button) findViewById(R.id.gallerybtn);
@@ -202,6 +204,15 @@ public class MainActivity extends AppCompatActivity implements crop.TextClicked 
 //        });
 
 
+
+        searchsomeone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent i = new Intent(MainActivity.this, search.class);
+                startActivity(i);
+            }
+        });
         next.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -433,7 +444,7 @@ public class MainActivity extends AppCompatActivity implements crop.TextClicked 
                         double[][][] cols = new double[mat.rows()][mat.cols()][3];
                         h = mat.rows();
                         w = mat.cols();
-                        Log.d("see it", "onClick: w and h is :" + w + "  " + h);
+                        Log.d("see it", "onClick: w and h is :" + w + "  " + h+ mat);
                         for (int i = 0; i < mat.rows(); i++) {
 //                            rows.clear();
                             for (int j = 0; j < mat.cols(); j++) {

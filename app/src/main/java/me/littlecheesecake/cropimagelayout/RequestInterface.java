@@ -1,16 +1,16 @@
 package me.littlecheesecake.cropimagelayout;
 
-import org.opencv.core.Mat;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
-import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
+import retrofit2.http.Url;
+
+import static me.littlecheesecake.cropimagelayout.search.faceid;
 
 public interface RequestInterface {
 
@@ -53,8 +53,20 @@ public interface RequestInterface {
     @POST("recognize")
     Call<Object> callrecognize(@Body double[][][] doubles);
 
-    @GET("")
-    Call<List<String>> getallfaces();
+
+//    @GET()
+//    Call<Object> getfaces(@Url String faceid);
+
+
+//    @GET("{user_id}")
+//    Call<Object> getfaces(@Path(value = "user_id", encoded = true) String userId);
+
+
+    @GET
+    Call<List<searchid>> getfaces(@Url String url);
+
+//    @GET(faceid)
+//    Call<Object> getfaces();
 
 //returns: []
 

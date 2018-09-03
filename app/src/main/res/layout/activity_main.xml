@@ -192,6 +192,12 @@
 
 
 
+                <Button
+                    android:id="@+id/searchsomeone"
+                    android:layout_marginTop="50dp"
+                    android:layout_width="100dp"
+                    android:layout_height="70dp"
+                    android:text="searchsomeone"/>
             </RelativeLayout>
     <ListView
         android:visibility="gone"
