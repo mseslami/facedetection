@@ -28,9 +28,8 @@
             android:layout_centerHorizontal="true"
             android:layout_width="200dp"
             android:layout_height="200dp"
-            android:src="@drawable/back"
             android:id="@+id/searchimageview"
-            android:background="#444444"
+            android:background="#00444444"
             android:layout_below="@+id/searchbtn"/>
         <ListView
             android:layout_width="match_parent"

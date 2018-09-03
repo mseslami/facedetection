@@ -193,6 +193,7 @@
 
 
                 <Button
+                    android:background="@drawable/buttonbackground2"
                     android:id="@+id/searchsomeone"
                     android:layout_marginTop="50dp"
                     android:layout_width="100dp"
