@@ -21,8 +21,11 @@ import me.littlecheesecake.croplayout.EditableImage;
 import me.littlecheesecake.croplayout.handler.OnBoxChangedListener;
 import me.littlecheesecake.croplayout.model.ScalableBox;
 
-import static me.littlecheesecake.cropimagelayout.MainActivity.a;
-import static me.littlecheesecake.cropimagelayout.MainActivity.bmp32;
+import static me.littlecheesecake.cropimagelayout.Mainfragment.a;
+import static me.littlecheesecake.cropimagelayout.Mainfragment.bmp32;
+
+//import static me.littlecheesecake.cropimagelayout.MainActivity.a;
+//import static me.littlecheesecake.cropimagelayout.MainActivity.bmp32;
 
 
 /**

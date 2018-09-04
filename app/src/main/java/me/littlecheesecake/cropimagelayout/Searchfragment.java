@@ -1,14 +1,19 @@
 package me.littlecheesecake.cropimagelayout;
 
+
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -28,7 +33,12 @@ import retrofit2.Response;
 
 import static me.littlecheesecake.cropimagelayout.ApiClient.BASE_URL;
 
-public class search extends AppCompatActivity {
+
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class Searchfragment extends Fragment {
+
     EditText searchedittext;
     Button searchbtn, searchall;
     ListView searchlistview, allnameslistview;
@@ -36,16 +46,30 @@ public class search extends AppCompatActivity {
     ImageView imageView;
     Bitmap bmp;
 
+    public Searchfragment() {
+        // Required empty public constructor
+    }
+
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search);
-        searchbtn = (Button) findViewById(R.id.searchbtn);
-        searchedittext = (EditText) findViewById(R.id.searchsomeone);
-        searchlistview = (ListView) findViewById(R.id.searchlistview);
-        imageView = (ImageView) findViewById(R.id.searchimageview);
-        searchall = (Button) findViewById(R.id.getallfaces);
-        allnameslistview = (ListView) findViewById(R.id.allnameslistview);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_searchfragment, container, false);
+    }
+
+
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+
+
+        searchbtn = (Button) getView().findViewById(R.id.searchbtn);
+        searchedittext = (EditText) getView().findViewById(R.id.searchsomeone);
+        searchlistview = (ListView) getView().findViewById(R.id.searchlistview);
+        imageView = (ImageView) getView().findViewById(R.id.searchimageview);
+        searchall = (Button) getView().findViewById(R.id.getallfaces);
+        allnameslistview = (ListView) getView().findViewById(R.id.allnameslistview);
 
         searchall.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,7 +91,7 @@ public class search extends AppCompatActivity {
                             for (int o =0 ; o< response.body().size(); o++){
                                 allnames[o]= response.body().get(o);
                             }
-                            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(),
+                            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
                                     android.R.layout.simple_list_item_1, android.R.id.text1,
                                     allnames);
                             allnameslistview.setAdapter(adapter);
@@ -170,7 +194,7 @@ public class search extends AppCompatActivity {
 //                                    R.drawable.ic_launcher , R.drawable.ic_launcher , R.drawable.ic_launcher, R.drawable.ic_launcher};
 
 
-                            CustomList adapter = new CustomList(search.this, searchids, drawable);
+                            CustomList adapter = new CustomList(getActivity(), searchids, drawable);
                             searchlistview.setAdapter(adapter);
 
                             allnameslistview.setVisibility(View.INVISIBLE);
@@ -192,4 +216,6 @@ public class search extends AppCompatActivity {
 
     }
 
+
 }
+
