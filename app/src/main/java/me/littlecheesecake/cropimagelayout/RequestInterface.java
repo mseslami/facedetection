@@ -64,6 +64,10 @@ public interface RequestInterface {
 
     @GET
     Call<List<searchid>> getfaces(@Url String url);
+    @GET
+    Call<List<String>> getnames(@Url String url);
+    @POST
+    Call<Object> insertface(@Url String url, @Body double[][][]doubles);
 
 //    @GET(faceid)
 //    Call<Object> getfaces();

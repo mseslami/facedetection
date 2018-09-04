@@ -15,7 +15,7 @@
         <me.littlecheesecake.croplayout.EditPhotoView
             android:id="@+id/editable_image"
 
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#00000000"
             crop:crop_corner_color="#45B4CA"

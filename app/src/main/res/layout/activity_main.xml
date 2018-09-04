@@ -18,8 +18,9 @@
                 android:layout_height="match_parent">
                 <FrameLayout
 
-                    android:layout_width="fill_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="300dp"
+                    android:layout_height="300dp"
+                    android:layout_centerHorizontal="true"
                     android:layout_marginBottom="140dp"
                     android:layout_marginTop="80dp"
                     android:id="@+id/cropframelayout"
@@ -133,8 +134,10 @@
 
                 <ImageView
                     android:id="@+id/imageView"
-                    android:layout_width="fill_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="300dp"
+                    android:layout_height="300dp"
+                    android:background="#00000000"
+                    android:layout_centerHorizontal="true"
                     android:layout_marginBottom="140dp"
                     android:layout_marginTop="40dp" />
 

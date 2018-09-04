@@ -689,6 +689,7 @@ public class MainActivity extends AppCompatActivity implements crop.TextClicked 
                     next.setVisibility(View.INVISIBLE);
                     nexttext.setVisibility(View.INVISIBLE);
 
+
                 }
 
             }
