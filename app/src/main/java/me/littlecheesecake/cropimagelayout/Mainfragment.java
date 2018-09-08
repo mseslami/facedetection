@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,10 +38,11 @@ import org.opencv.core.Mat;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Response;
+
+
 
 
 /**
@@ -48,21 +50,20 @@ import retrofit2.Response;
  */
 public class Mainfragment extends Fragment {
 
-
-    public static ArrayList<ArrayList<Double>> a = new ArrayList();
+    public static TextView boxText3;
+    public static ArrayList<ArrayList<Double>> responsephoto = new ArrayList();
     public static int w, h;
     public static Bitmap bmp32;
     private static final int Cam_Req = 1;
     private static final int RESULT_OK = 2;
     Bitmap cameraphoto;
-    Button searchsomeone;
+    //    Button searchsomeone;
     Bitmap selectedImage;
     public static Bitmap imagetocrop2;
     static String datatopost;
     static public ImageView image, next, back;
     TextView titletxt;
     EditText nameedittext;
-    TextView nexttext, backtext;
     boolean photoselection = false;
     //    BitmapDrawable imagetocrop;
     public static Drawable imagetocrop;
@@ -73,8 +74,7 @@ public class Mainfragment extends Fragment {
     crop fragment1;
     public static Mat mat;
     static int counter;
-
-
+    Button camerabtn, gallerybtn, insertbtn, detectbtn;
 
     private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(getActivity()) {
         @Override
@@ -92,6 +92,7 @@ public class Mainfragment extends Fragment {
             }
         }
     };
+
     public void onResume() {
         super.onResume();
         if (!OpenCVLoader.initDebug()) {
@@ -124,32 +125,32 @@ public class Mainfragment extends Fragment {
         final ImageView nextface = (ImageView) getView().findViewById(R.id.nextface);
         final ImageView backface2 = (ImageView) getView().findViewById(R.id.backface2);
         suspectslistview = (ListView) getView().findViewById(R.id.listview);
-        searchsomeone = (Button) getView().findViewById(R.id.searchsomeone);
+//        searchsomeone = (Button) getView().findViewById(R.id.searchsomeone);
 
-        final Button camerabtn = (Button) getView().findViewById(R.id.camerabtn);
-        final Button gallerybtn = (Button) getView().findViewById(R.id.gallerybtn);
-        final Button insertbtn = (Button) getView().findViewById(R.id.insertbtn);
-        final Button detectbtn = (Button) getView().findViewById(R.id.detectbtn);
+        camerabtn = (Button) getView().findViewById(R.id.camerabtn);
+        gallerybtn = (Button) getView().findViewById(R.id.gallerybtn);
+        insertbtn = (Button) getView().findViewById(R.id.insertbtn);
+        detectbtn = (Button) getView().findViewById(R.id.detectbtn);
         nameedittext = (EditText) getView().findViewById(R.id.nameedittext);
-        nexttext = (TextView) getView().findViewById(R.id.nexttxt);
-        backtext = (TextView) getView().findViewById(R.id.backtxt);
         image = (ImageView) getView().findViewById(R.id.imageView);
         next = (ImageView) getView().findViewById(R.id.next);
         back = (ImageView) getView().findViewById(R.id.back);
         titletxt = (TextView) getView().findViewById(R.id.titletxt);
+        boxText3 = (TextView) getView().findViewById(R.id.box_text3);
+
         final String STEP_1, STEP_2, STEP_3_1, STEP_3_2;
         STEP_1 = "Please choose a photo";
         STEP_2 = "Edit and crop";
         STEP_3_1 = "Add to database";
         STEP_3_2 = "Recognize photo";
         titletxt.setText(STEP_1);
-        nextface.setVisibility(View.VISIBLE);
+//        nextface.setVisibility(View.VISIBLE);
         image.setImageDrawable(getResources().getDrawable(R.drawable.anonymous));
-        String[] SamsungPhones = new String[] { "Galaxy S", "Galaxy S2",
+        String[] SamsungPhones = new String[]{"Galaxy S", "Galaxy S2",
                 "Galaxy Note", "Galaxy Beam", "Galaxy Ace Plus", "Galaxy S3",
                 "Galaxy S Advance", "Galaxy Wave 3", "Galaxy Wave Y",
                 "Galaxy Nexus", "Galaxy W", "Galaxy Y", "Galaxy Mini",
-                "Galaxy Gio", "Galaxy Wave", "Galaxy Wave 2" };
+                "Galaxy Gio", "Galaxy Wave", "Galaxy Wave 2"};
 
         // Locate ListView in listview_main.xml
         suspectslistview = (ListView) getView().findViewById(R.id.listview);
@@ -212,15 +213,14 @@ public class Mainfragment extends Fragment {
 //        });
 
 
-
-        searchsomeone.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Intent i = new Intent(getActivity(), Menuactivity.class);
-                startActivity(i);
-            }
-        });
+//        searchsomeone.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//                Intent i = new Intent(getActivity(), Menuactivity.class);
+//                startActivity(i);
+//            }
+//        });
         next.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -237,78 +237,90 @@ public class Mainfragment extends Fragment {
                         insertbtn.setVisibility(View.VISIBLE);
                         detectbtn.setVisibility(View.VISIBLE);
                         next.setVisibility(View.INVISIBLE);
-                        nexttext.setVisibility(View.INVISIBLE);
 
 
                         nextface.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 counter++;
+//                                boxText3.setText("cropint " + (responsephoto.size() - counter + 1) + "th face");
+                                if (counter < responsephoto.size() && responsephoto.size()!=1) {
+                                    backface2.setVisibility(View.VISIBLE);
+                                    Toast.makeText(getActivity(), "counnter is :" + counter, Toast.LENGTH_SHORT).show();
+                                    try {
+                                        fragment1 = new crop();
+                                        Bundle bundle = new Bundle();
+                                        fragment1.setArguments(bundle);
 
-                                Toast.makeText(getActivity(), "counnter is :" + counter, Toast.LENGTH_SHORT).show();
-                                try {
-                                    fragment1 = new crop();
-                                    Bundle bundle = new Bundle();
-                                    fragment1.setArguments(bundle);
+                                        bundle.putInt("y1", responsephoto.get(counter).get(0).intValue());
+                                        bundle.putInt("x2", responsephoto.get(counter).get(1).intValue());
+                                        bundle.putInt("y2", responsephoto.get(counter).get(2).intValue());
+                                        bundle.putInt("x1", responsephoto.get(counter).get(3).intValue());
 
-                                    bundle.putInt("y1", a.get(counter).get(0).intValue());
-                                    bundle.putInt("x2", a.get(counter).get(1).intValue());
-                                    bundle.putInt("y2", a.get(counter).get(2).intValue());
-                                    bundle.putInt("x1", a.get(counter).get(3).intValue());
-
-                                    fm1 = getActivity().getSupportFragmentManager();
-                                    ft1 = fm1.beginTransaction();
-                                    ft1.replace(R.id.cropframelayout, fragment1);
-                                    ft1.commit();
-                                } catch (Exception e) {
+                                        fm1 = getActivity().getSupportFragmentManager();
+                                        ft1 = fm1.beginTransaction();
+                                        ft1.replace(R.id.cropframelayout, fragment1);
+                                        ft1.commit();
+                                    } catch (Exception e) {
 //                                    nextface.setVisibility(View.INVISIBLE);
-                                }
+                                    }
 
+                                }
+                                if (counter == responsephoto.size() - 1) {
+                                    nextface.setVisibility(View.INVISIBLE);
+                                }
                             }
                         });
 
-
-                        try {
-                            fragment1 = new crop();
-                            Bundle bundle = new Bundle();
-                            fragment1.setArguments(bundle);
-
-                            bundle.putInt("y1", 4);
-                            bundle.putInt("x2", 44);
-                            bundle.putInt("y2", 40);
-                            bundle.putInt("x1", 5);
-
-                            fm1 = getActivity().getSupportFragmentManager();
-                            ft1 = fm1.beginTransaction();
-                            ft1.replace(R.id.cropframelayout, fragment1);
-                            ft1.commit();
-                        } catch (Exception e) {
-//                                    nextface.setVisibility(View.INVISIBLE);
-                        }
+//first test crop:
+//                        try {
+//                            fragment1 = new crop();
+//                            Bundle bundle = new Bundle();
+//                            fragment1.setArguments(bundle);
+//
+//                            bundle.putInt("y1", 4);
+//                            bundle.putInt("x2", 44);
+//                            bundle.putInt("y2", 40);
+//                            bundle.putInt("x1", 5);
+//
+//                            fm1 = getActivity().getSupportFragmentManager();
+//                            ft1 = fm1.beginTransaction();
+//                            ft1.replace(R.id.cropframelayout, fragment1);
+//                            ft1.commit();
+//                        } catch (Exception e) {
+////                                    nextface.setVisibility(View.INVISIBLE);
+//                            }
 
 
                         backface2.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
+
+                                nextface.setVisibility(View.VISIBLE);
                                 counter--;
+//                                boxText3.setText(responsephoto.size()+" faces are found \n "+"croping " + (responsephoto.size() - counter + 1) + "th face");
+                                if (counter > -1) {
+                                    Toast.makeText(getActivity(), "counnter is :" + counter, Toast.LENGTH_SHORT).show();
+                                    try {
+                                        fragment1 = new crop();
+                                        Bundle bundle = new Bundle();
+                                        fragment1.setArguments(bundle);
 
-                                Toast.makeText(getActivity(), "counnter is :" + counter, Toast.LENGTH_SHORT).show();
-                                try {
-                                    fragment1 = new crop();
-                                    Bundle bundle = new Bundle();
-                                    fragment1.setArguments(bundle);
+                                        bundle.putInt("y1", responsephoto.get(counter).get(0).intValue());
+                                        bundle.putInt("x2", responsephoto.get(counter).get(1).intValue());
+                                        bundle.putInt("y2", responsephoto.get(counter).get(2).intValue());
+                                        bundle.putInt("x1", responsephoto.get(counter).get(3).intValue());
 
-                                    bundle.putInt("y1", a.get(counter).get(0).intValue());
-                                    bundle.putInt("x2", a.get(counter).get(1).intValue());
-                                    bundle.putInt("y2", a.get(counter).get(2).intValue());
-                                    bundle.putInt("x1", a.get(counter).get(3).intValue());
-
-                                    fm1 = getActivity().getSupportFragmentManager();
-                                    ft1 = fm1.beginTransaction();
-                                    ft1.replace(R.id.cropframelayout, fragment1);
-                                    ft1.commit();
-                                } catch (Exception e) {
+                                        fm1 = getActivity().getSupportFragmentManager();
+                                        ft1 = fm1.beginTransaction();
+                                        ft1.replace(R.id.cropframelayout, fragment1);
+                                        ft1.commit();
+                                    } catch (Exception e) {
 //                                    nextface.setVisibility(View.INVISIBLE);
+                                    }
+                                }
+                                if (counter == 0) {
+                                    backface2.setVisibility(View.INVISIBLE);
                                 }
 
 
@@ -322,7 +334,7 @@ public class Mainfragment extends Fragment {
                         double[][][] cols = new double[mat.rows()][mat.cols()][3];
                         h = mat.rows();
                         w = mat.cols();
-                        Log.d("see it", "onClick: w and h is :" + w + "  " + h+ mat);
+                        Log.d("see it", "onClick: w and h is :" + w + "  " + h + mat);
                         for (int i = 0; i < mat.rows(); i++) {
 //                            rows.clear();
                             for (int j = 0; j < mat.cols(); j++) {
@@ -338,7 +350,7 @@ public class Mainfragment extends Fragment {
                         Log.d("here", "onClick: see cols" + cols);
 
                         RequestInterface totalscoreservice2 = ApiClient.getClient().create(RequestInterface.class);
-                        //[[a,b,c,d]]
+                        //[[responsephoto,b,c,d]]
                         Call<Object> calltotalscore2 = totalscoreservice2.callcontent2(cols);
                         calltotalscore2.enqueue(new retrofit2.Callback<Object>() {
                             @Override
@@ -348,19 +360,22 @@ public class Mainfragment extends Fragment {
                                 Log.d("wwwwwwwwwwwwwwwwww", "222222222222222onResponse: response is being done");
                                 Toast.makeText(getActivity(), "the response " + response.body(), Toast.LENGTH_LONG).show();
 //
-//                                A[] a = new A[response.body().length];
+//                                A[] responsephoto = new A[response.body().length];
 //                                int i = 0;
 //                                for (Object o : objArray) {
-//                                    a[i++] = (A) o;
+//                                    responsephoto[i++] = (A) o;
 //                                }
 
 //                              try{
-                                a = (ArrayList<ArrayList<Double>>) response.body();
-//                                  Log.d("see response as a:", "onResponse: a is : +" + a[0] + "  " + a[1] + "  " + a[2] + "  " + a[3] + "  ");
-//                                for (int i = 0; i < a.size(); i++) {
+                                responsephoto = (ArrayList<ArrayList<Double>>) response.body();
+                                if (responsephoto.size() > 1) {
+                                    nextface.setVisibility(View.VISIBLE);
+                                }
+//                                  Log.d("see response as responsephoto:", "onResponse: responsephoto is : +" + responsephoto[0] + "  " + responsephoto[1] + "  " + responsephoto[2] + "  " + responsephoto[3] + "  ");
+//                                for (int i = 0; i < responsephoto.size(); i++) {
 ////                                    ArrayList<Double> b = new ArrayList();
-////                                    b.add(a.get(i));
-//                                    Log.d("see response as a:", "onResponse: a is : +" + a.get(i).get(0) + +a.get(i).get(1) + a.get(i).get(2) + a.get(i).get(3) + " b type is :  ");
+////                                    b.add(responsephoto.get(i));
+//                                    Log.d("see response as responsephoto:", "onResponse: responsephoto is : +" + responsephoto.get(i).get(0) + +responsephoto.get(i).get(1) + responsephoto.get(i).get(2) + responsephoto.get(i).get(3) + " b type is :  ");
 //                                }
 //                                fragment1 = new crop();
 //                                fm1 = getSupportFragmentManager();
@@ -374,10 +389,10 @@ public class Mainfragment extends Fragment {
                                 fragment1.setArguments(bundle);
                                 counter = 0;
                                 try {
-                                    bundle.putInt("y1", a.get(counter).get(0).intValue());
-                                    bundle.putInt("x2", a.get(counter).get(1).intValue());
-                                    bundle.putInt("y2", a.get(counter).get(2).intValue());
-                                    bundle.putInt("x1", a.get(counter).get(3).intValue());
+                                    bundle.putInt("y1", responsephoto.get(counter).get(0).intValue());
+                                    bundle.putInt("x2", responsephoto.get(counter).get(1).intValue());
+                                    bundle.putInt("y2", responsephoto.get(counter).get(2).intValue());
+                                    bundle.putInt("x1", responsephoto.get(counter).get(3).intValue());
                                     fm1 = getActivity().getSupportFragmentManager();
                                     ft1 = fm1.beginTransaction();
                                     ft1.replace(R.id.cropframelayout, fragment1);
@@ -395,10 +410,10 @@ public class Mainfragment extends Fragment {
 
 
                     } else {
-                        Toast.makeText(getActivity(), "Please choose a photo", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "Please choose responsephoto photo", Toast.LENGTH_SHORT).show();
                     }
                 }
-//                java.lang.IllegalStateException: Expected a string but was BEGIN_ARRAY at line 1 column 2 path $
+//                java.lang.IllegalStateException: Expected responsephoto string but was BEGIN_ARRAY at line 1 column 2 path $
 
             }
         });
@@ -410,7 +425,6 @@ public class Mainfragment extends Fragment {
                     image.setImageDrawable(getResources().getDrawable(R.drawable.anonymous));
                     photoselection = false;
                     back.setVisibility(View.INVISIBLE);
-                    backtext.setVisibility(View.INVISIBLE);
                     nextface.setVisibility(View.VISIBLE);
 
                 } else if (titletxt.getText().toString().equals(STEP_2)) {
@@ -420,10 +434,13 @@ public class Mainfragment extends Fragment {
                     insertbtn.setVisibility(View.INVISIBLE);
                     detectbtn.setVisibility(View.INVISIBLE);
                     next.setVisibility(View.VISIBLE);
-                    nexttext.setVisibility(View.VISIBLE);
 //                    ft1.remove(fragment1);
-                    if (fragment1 != null)
-                        getActivity().getSupportFragmentManager().beginTransaction().remove(fragment1).commit();
+
+                    try {
+                        if (!ft1.isEmpty())
+                            ft1.remove(fragment1);
+                    } catch (Exception e) {
+                    }//                    getActivity().getSupportFragmentManager().beginTransaction().remove(fragment1).commit();
 
 
                 } else if (titletxt.getText().toString().equals(STEP_3_1)) {
@@ -432,7 +449,6 @@ public class Mainfragment extends Fragment {
                     insertbtn.setVisibility(View.VISIBLE);
                     detectbtn.setVisibility(View.VISIBLE);
                     next.setVisibility(View.INVISIBLE);
-                    nexttext.setVisibility(View.INVISIBLE);
 
 
                 }
@@ -446,6 +462,9 @@ public class Mainfragment extends Fragment {
             public void onClick(View view) {
                 YoYo.with(Techniques.Tada).duration(500).repeat(0).playOn(view);
 
+
+
+
             }
         });
         insertbtn.setOnClickListener(new View.OnClickListener() {
@@ -455,7 +474,6 @@ public class Mainfragment extends Fragment {
                 insertbtn.setVisibility(View.INVISIBLE);
                 detectbtn.setVisibility(View.INVISIBLE);
                 next.setVisibility(View.VISIBLE);
-                nexttext.setVisibility(View.VISIBLE);
                 nameedittext.setVisibility(View.VISIBLE);
                 titletxt.setText(STEP_3_1);
 
@@ -473,7 +491,6 @@ public class Mainfragment extends Fragment {
                 startActivityForResult(cameraIntent, Cam_Req);
                 photoselection = true;
                 back.setVisibility(View.VISIBLE);
-                backtext.setVisibility(View.VISIBLE);
 
             }
         });
@@ -488,7 +505,6 @@ public class Mainfragment extends Fragment {
                 startActivityForResult(photoPickerIntent, RESULT_OK);
                 photoselection = true;
                 back.setVisibility(View.VISIBLE);
-                backtext.setVisibility(View.VISIBLE);
             }
         });
 
@@ -502,20 +518,33 @@ public class Mainfragment extends Fragment {
 
         if (reqCode == Cam_Req) {
 
-            cameraphoto = (Bitmap) data.getExtras().get("data");
+            try {
+                cameraphoto = (Bitmap) data.getExtras().get("data");
 
-            imagetocrop2 = cameraphoto;
-            image.setImageBitmap(cameraphoto);
+                imagetocrop2 = cameraphoto;
+                image.setVisibility(View.VISIBLE);
+                image.setImageBitmap(cameraphoto);
+                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                params.addRule(RelativeLayout.BELOW, R.id.imageView);
+                params.addRule(RelativeLayout.LEFT_OF, R.id.centerdot);
+                camerabtn.setLayoutParams(params);
+                camerabtn.getLayoutParams().height = 180;
+                camerabtn.getLayoutParams().width = 110;
 
-            imagetocrop = new BitmapDrawable(getResources(), cameraphoto);
-            ArrayList cols = new ArrayList();
-            ArrayList rows = new ArrayList();
+
+                RelativeLayout.LayoutParams params2 = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                params2.addRule(RelativeLayout.BELOW, R.id.imageView);
+                params2.addRule(RelativeLayout.RIGHT_OF, R.id.centerdot);
+                gallerybtn.setLayoutParams(params2);
+                gallerybtn.getLayoutParams().height = 180;
+                gallerybtn.getLayoutParams().width = 110;
+                imagetocrop = new BitmapDrawable(getResources(), cameraphoto);
+
+            } catch (Exception e) {
+            }
 
 
-
-
-        }
-        if (reqCode == RESULT_OK)
+        } else if (reqCode == RESULT_OK)
 
         {
             try {
@@ -523,6 +552,7 @@ public class Mainfragment extends Fragment {
                 final InputStream imageStream = getActivity().getContentResolver().openInputStream(imageUri);
                 selectedImage = BitmapFactory.decodeStream(imageStream);
                 image.setImageBitmap(selectedImage);
+                image.setVisibility(View.VISIBLE);
                 imagetocrop2 = selectedImage;
                 imagetocrop = new BitmapDrawable(getResources(), selectedImage);
 
@@ -539,7 +569,6 @@ public class Mainfragment extends Fragment {
             Toast.makeText(getActivity(), "You haven't picked Image", Toast.LENGTH_LONG).show();
         }
     }
-
 
 
 }

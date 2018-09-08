@@ -67,7 +67,7 @@ public class Searchfragment extends Fragment {
         searchbtn = (Button) getView().findViewById(R.id.searchbtn);
         searchedittext = (EditText) getView().findViewById(R.id.searchsomeone);
         searchlistview = (ListView) getView().findViewById(R.id.searchlistview);
-        imageView = (ImageView) getView().findViewById(R.id.searchimageview);
+//        imageView = (ImageView) getView().findViewById(R.id.searchimageview);
         searchall = (Button) getView().findViewById(R.id.getallfaces);
         allnameslistview = (ListView) getView().findViewById(R.id.allnameslistview);
 

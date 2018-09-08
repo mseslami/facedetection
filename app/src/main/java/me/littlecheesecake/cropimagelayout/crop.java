@@ -21,10 +21,10 @@ import me.littlecheesecake.croplayout.EditableImage;
 import me.littlecheesecake.croplayout.handler.OnBoxChangedListener;
 import me.littlecheesecake.croplayout.model.ScalableBox;
 
-import static me.littlecheesecake.cropimagelayout.Mainfragment.a;
+import static me.littlecheesecake.cropimagelayout.Mainfragment.responsephoto;
 import static me.littlecheesecake.cropimagelayout.Mainfragment.bmp32;
 
-//import static me.littlecheesecake.cropimagelayout.MainActivity.a;
+//import static me.littlecheesecake.cropimagelayout.MainActivity.responsephoto;
 //import static me.littlecheesecake.cropimagelayout.MainActivity.bmp32;
 
 
@@ -63,32 +63,31 @@ public class crop extends Fragment {
         imageView = (EditPhotoView) getView().findViewById(R.id.editable_image);
         final TextView boxText = (TextView) getView().findViewById(R.id.box_text);
         final TextView boxText2 = (TextView) getView().findViewById(R.id.box_text2);
-        final TextView boxText3 = (TextView) getView().findViewById(R.id.box_text3);
 //        ImageView nextface = (ImageView) getView().findViewById(R.id.nextface);
 
-        boxText2.setText(a.size() + " FACES ARE FOUND");
+        boxText2.setText(responsephoto.size() + " FACES ARE FOUND");
         //        final EditableImage image = new EditableImage(getActivity(), R.drawable.photo2);
 
-        for (int i = 0; i < a.size(); i++) {
-            Log.d("see response as a:", "onResponse: crop crop a is : +" + a.get(i).get(0) + +a.get(i).get(1) + a.get(i).get(2) + a.get(i).get(3) + " b type is :  ");
+        for (int i = 0; i < responsephoto.size(); i++) {
+            Log.d("see response as a:", "onResponse: crop crop responsephoto is : +" + responsephoto.get(i).get(0) + +responsephoto.get(i).get(1) + responsephoto.get(i).get(2) + responsephoto.get(i).get(3) + " b type is :  ");
         }
         image = new EditableImage(bmp32);
 //        ScalableBox box1 = new ScalableBox(25, 10, 640, 80);
 //        ScalableBox box2 = new ScalableBox(2, 18, 680, 80);
 //        ScalableBox box3 = new ScalableBox(250, 80, 400, 80);
 
-        facecount = a.size();
+        facecount = responsephoto.size();
         nextfaceb = true;
 
 
-        boxText3.setText("cropint " + (a.size() - facecount + 1) + "th face");
+//        boxText3.setText("cropint " + (responsephoto.size() - facecount + 1) + "th face");
 //        String strtext = getArguments().getString("edttext");
 
         try {
-//            y1 = a.get(facecount - 1).get(0).intValue();
-//            x2 = a.get(facecount - 1).get(1).intValue();
-//            y2 = a.get(facecount - 1).get(2).intValue();
-//            x1 = a.get(facecount - 1).get(3).intValue();
+//            y1 = responsephoto.get(facecount - 1).get(0).intValue();
+//            x2 = responsephoto.get(facecount - 1).get(1).intValue();
+//            y2 = responsephoto.get(facecount - 1).get(2).intValue();
+//            x1 = responsephoto.get(facecount - 1).get(3).intValue();
 
             y1 = getArguments().getInt("y1");
             x2 = getArguments().getInt("x2");
@@ -163,15 +162,15 @@ public class crop extends Fragment {
 //        });
 
 
-//        for (int i =0 ; i<a.size(); i++){
+//        for (int i =0 ; i<responsephoto.size(); i++){
 //
 //        }
 
 //        try {
-//            int y1 = a.get(0).get(0).intValue();
-//            int x2 = a.get(0).get(1).intValue();
-//            int y2 = a.get(0).get(2).intValue();
-//            int x1 = a.get(0).get(3).intValue();
+//            int y1 = responsephoto.get(0).get(0).intValue();
+//            int x2 = responsephoto.get(0).get(1).intValue();
+//            int y2 = responsephoto.get(0).get(2).intValue();
+//            int x1 = responsephoto.get(0).get(3).intValue();
 //
 //            ScalableBox box1 = new ScalableBox(x1, y1, x2, y2);
 //           ScalableBox box2 = new ScalableBox(0, 0, 0, 0);

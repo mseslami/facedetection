@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 import devlight.io.library.ntb.NavigationTabBar;
 
-public class Menuactivity extends AppCompatActivity{
+public class Menuactivity extends AppCompatActivity implements crop.TextClicked{
     public static NavigationTabBar navigationTabBar;
     public static ViewPager viewPager;
 
@@ -41,7 +41,7 @@ public class Menuactivity extends AppCompatActivity{
         final ArrayList<NavigationTabBar.Model> models = new ArrayList<>();
         models.add(
                 new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.cameraicon),
+                        getResources().getDrawable(R.drawable.facedetection),
                         Color.parseColor(colors[0]))
 //                        .selectedIcon(getResources().getDrawable(R.drawable.ic_sixth))
                         .title("camera")
@@ -115,6 +115,10 @@ public class Menuactivity extends AppCompatActivity{
     }
 
 
+    @Override
+    public void sendText(int x1, int y1, int x2, int y2) {
+
+    }
 }
 
 

@@ -63,8 +63,14 @@ public interface RequestInterface {
 
     @GET
     Call<List<searchid>> getfaces(@Url String url);
+
+
+    //user id will be added to url
     @GET
     Call<List<String>> getnames(@Url String url);
+
+
+    //user id will be added to url
     @POST
     Call<Object> insertface(@Url String url, @Body double[][][]doubles);
 

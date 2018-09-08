@@ -43,16 +43,6 @@
         android:textSize="16sp"
         android:layout_margin="0dp"
         android:layout_gravity="center_horizontal" />
-        <TextView
-            android:layout_below="@id/box_text2"
-            android:id="@+id/box_text3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#45B4CA"
-            android:textStyle="bold"
-            android:textSize="16sp"
-            android:layout_margin="0dp"
-            android:layout_gravity="center_horizontal" />
 
         <!--<ImageView-->
             <!--android:layout_toRightOf="@id/box_text"-->

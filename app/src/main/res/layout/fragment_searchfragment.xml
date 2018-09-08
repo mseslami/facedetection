@@ -11,37 +11,38 @@
         android:layout_height="match_parent">
 
         <Button
+            android:layout_marginLeft="10dp"
             android:id="@+id/getallfaces"
-            android:layout_width="90dp"
-            android:layout_height="40dp"
-            android:layout_margin="30dp"
-            android:text="all faces"
-            android:background="@drawable/buttonbackground2" />
+            android:layout_width="60dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/usersgroup" />
 
         <EditText
             android:id="@+id/searchsomeone"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="80dp"
-            android:hint="search some one" />
+            android:layout_marginTop="100dp"
+            android:hint="search someone" />
 
         <Button
+            android:background="@drawable/buttonbackground2"
             android:id="@+id/searchbtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
             android:layout_below="@id/searchsomeone"
             android:layout_centerHorizontal="true"
             android:layout_margin="30dp"
             android:text="search" />
 
-        <ImageView
-            android:id="@+id/searchimageview"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:layout_below="@+id/searchbtn"
-            android:layout_centerHorizontal="true"
-            android:background="#00444444" />
+        <!--<ImageView-->
+            <!--android:id="@+id/searchimageview"-->
+            <!--android:layout_width="200dp"-->
+            <!--android:layout_height="200dp"-->
+            <!--android:layout_below="@+id/searchbtn"-->
+            <!--android:layout_centerHorizontal="true"-->
+            <!--android:background="#00444444" />-->
 
         <ListView
             android:id="@+id/searchlistview"
