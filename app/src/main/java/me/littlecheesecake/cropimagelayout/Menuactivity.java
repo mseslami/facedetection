@@ -1,23 +1,31 @@
 package me.littlecheesecake.cropimagelayout;
 
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 
+import org.opencv.android.Utils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import devlight.io.library.ntb.NavigationTabBar;
+import retrofit2.Call;
+import retrofit2.Response;
 
-public class Menuactivity extends AppCompatActivity implements crop.TextClicked{
+public class Menuactivity extends AppCompatActivity implements crop.TextClicked {
     public static NavigationTabBar navigationTabBar;
     public static ViewPager viewPager;
+
+
+    public static int pixx1, pixx2, pixy1, pixy2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,6 +125,10 @@ public class Menuactivity extends AppCompatActivity implements crop.TextClicked{
 
     @Override
     public void sendText(int x1, int y1, int x2, int y2) {
+        pixx1 = x1;
+        pixx2 = x2;
+        pixy1 = y1;
+        pixy2 = y2;
 
     }
 }

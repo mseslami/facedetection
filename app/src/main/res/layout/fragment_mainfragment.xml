@@ -29,6 +29,7 @@
 
         <FrameLayout
 
+            android:visibility="invisible"
             android:id="@+id/cropframelayout"
             android:layout_width="340dp"
             android:layout_height="440dp"
@@ -185,7 +186,8 @@
     </RelativeLayout>
 
     <ListView
-        android:id="@+id/listview"
+        android:translationZ="200dp"
+        android:id="@+id/listviewmain"
         android:layout_width="220dp"
         android:layout_height="300dp"
         android:layout_centerInParent="true"

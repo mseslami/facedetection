@@ -13,6 +13,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -38,17 +40,21 @@ import org.opencv.core.Mat;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Response;
 
-
+import static me.littlecheesecake.cropimagelayout.Menuactivity.pixx1;
+import static me.littlecheesecake.cropimagelayout.Menuactivity.pixx2;
+import static me.littlecheesecake.cropimagelayout.Menuactivity.pixy1;
+import static me.littlecheesecake.cropimagelayout.Menuactivity.pixy2;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Mainfragment extends Fragment {
+public class Mainfragment extends Fragment  {
 
     public static TextView boxText3;
     public static ArrayList<ArrayList<Double>> responsephoto = new ArrayList();
@@ -68,6 +74,7 @@ public class Mainfragment extends Fragment {
     //    BitmapDrawable imagetocrop;
     public static Drawable imagetocrop;
     ListView suspectslistview;
+    FrameLayout fragmentlayout;
 
     FragmentTransaction ft1;
     FragmentManager fm1;
@@ -127,6 +134,7 @@ public class Mainfragment extends Fragment {
         suspectslistview = (ListView) getView().findViewById(R.id.listview);
 //        searchsomeone = (Button) getView().findViewById(R.id.searchsomeone);
 
+        fragmentlayout = (FrameLayout) getView().findViewById(R.id.cropframelayout);
         camerabtn = (Button) getView().findViewById(R.id.camerabtn);
         gallerybtn = (Button) getView().findViewById(R.id.gallerybtn);
         insertbtn = (Button) getView().findViewById(R.id.insertbtn);
@@ -314,6 +322,7 @@ public class Mainfragment extends Fragment {
                                         fm1 = getActivity().getSupportFragmentManager();
                                         ft1 = fm1.beginTransaction();
                                         ft1.replace(R.id.cropframelayout, fragment1);
+
                                         ft1.commit();
                                     } catch (Exception e) {
 //                                    nextface.setVisibility(View.INVISIBLE);
@@ -425,8 +434,7 @@ public class Mainfragment extends Fragment {
                     image.setImageDrawable(getResources().getDrawable(R.drawable.anonymous));
                     photoselection = false;
                     back.setVisibility(View.INVISIBLE);
-                    nextface.setVisibility(View.VISIBLE);
-
+                    next.setVisibility(View.VISIBLE);
                 } else if (titletxt.getText().toString().equals(STEP_2)) {
                     titletxt.setText(STEP_1);
                     camerabtn.setVisibility(View.VISIBLE);
@@ -434,11 +442,39 @@ public class Mainfragment extends Fragment {
                     insertbtn.setVisibility(View.INVISIBLE);
                     detectbtn.setVisibility(View.INVISIBLE);
                     next.setVisibility(View.VISIBLE);
+                    nextface.setVisibility(View.INVISIBLE);
 //                    ft1.remove(fragment1);
 
                     try {
-                        if (!ft1.isEmpty())
+                        if (!ft1.isEmpty()){
                             ft1.remove(fragment1);
+                            getActivity().getSupportFragmentManager().beginTransaction().remove(fragment1).commit();
+                            getFragmentManager().beginTransaction().remove(fragment1).commitAllowingStateLoss();
+//                        ft1.transaction.addToBackStack(null);
+                            getActivity().getSupportFragmentManager().popBackStack();
+
+
+                            // Create new fragment and transaction
+                            Fragment newFragment = new crop();
+                            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+// Replace whatever is in the fragment_container view with this fragment,
+// and add the transaction to the back stack
+                            transaction.replace(R.id.cropframelayout, newFragment);
+                            transaction.addToBackStack(null);
+
+// Commit the transaction
+                            transaction.commit();
+
+
+                            FrameLayout layout = (FrameLayout) getView().findViewById(R.id.cropframelayout);
+                            layout.removeAllViewsInLayout();
+                            FragmentTransaction ft = getFragmentManager().beginTransaction();
+
+
+                        }
+
+
                     } catch (Exception e) {
                     }//                    getActivity().getSupportFragmentManager().beginTransaction().remove(fragment1).commit();
 
@@ -461,6 +497,128 @@ public class Mainfragment extends Fragment {
             @Override
             public void onClick(View view) {
                 YoYo.with(Techniques.Tada).duration(500).repeat(0).playOn(view);
+
+                Log.d("sendingcropedimage", "sendText:  " + pixx1 + "    " + pixy1+ "    " + pixx2+ "    " + pixy2);
+
+                bmp32 = cameraphoto.copy(Bitmap.Config.RGB_565, true);
+                Utils.bitmapToMat(bmp32, mat);
+                Log.d("sendingcropedimage", "sendText: mat array is :" + mat.rows() + "   " + mat.cols());
+
+                double[][][] cols = new double[pixy2 - pixy1][pixx2 - pixx1][3];
+                for (int i = pixy1, o = 0; o < pixy2 - pixy1 && i < pixy2; o++, i++) {
+//                            rows.clear();
+                    for (int j = pixx1, p = 0; p < pixx2 - pixx1 && j < pixx2; p++, j++) {
+
+                        cols[o][p][0] = mat.get(i, j)[0];
+                        cols[o][p][1] = mat.get(i, j)[1];
+                        cols[o][p][2] = mat.get(i, j)[2];
+
+                    }
+//                            cols.add(rows);
+                }
+
+
+                RequestInterface totalscoreservice2 = ApiClient.getClient().create(RequestInterface.class);
+                Call<Object> calltotalscore2 = totalscoreservice2.callrecognize(cols);
+                Log.d("sendingcropedimage", "sendingcropedimage request is going to be sent ");
+
+                calltotalscore2.enqueue(new retrofit2.Callback<Object>() {
+                    @Override
+                    public void onResponse(Call<Object> call, Response<Object> response) {
+                        Log.d("sendingcropedimage", "sendingcropedimage222222222222222onResponse: you are inside on response:  " + response.message()
+                                + " response body is :  " + response.body());
+
+                        if (response.body() != null) {
+                                List<List> suspects = new ArrayList();
+                                suspects = (List<List>) response.body();
+//                Log.d("sendingcropedimage", "onResponse: " + suspects.get(0).get(0));
+
+                                Log.d("sendingcropedimage", "sendingcropedimage222222222222222onResponse: response is being done");
+                                Toast.makeText(getActivity(), "the response " + response.body(), Toast.LENGTH_LONG).show();
+
+                                String[] values = new String[suspects.size()];
+//                values[0] = String.valueOf(suspects.get(0));
+                                for (int i = 0; i < suspects.size(); i++) {
+                                    values[i] = String.valueOf(suspects.get(i).get(0)) + "\n" + String.valueOf(suspects.get(i).get(1));
+
+                                }
+//                                suspectslistview = (ListView) getView().findViewById(R.id.listviewmain);
+//
+//                                // Bind array strings into an adapter
+                                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
+                                        android.R.layout.simple_list_item_1, android.R.id.text1,
+                                        values);
+//                                suspectslistview.setAdapter(adapter);
+//                                suspectslistview.setVisibility(View.VISIBLE);
+
+//                            image.setVisibility(View.INVISIBLE);
+
+
+                                //                                ft1.remove(fragment1).commit();
+//                                fragmentlayout.setVisibility(View.INVISIBLE);
+//                                ft1.hide(fragment1);
+
+                                ft1.remove(fragment1);
+                                getActivity().getSupportFragmentManager().beginTransaction().remove(fragment1).commit();
+                                getFragmentManager().beginTransaction().remove(fragment1).commitAllowingStateLoss();
+//                        ft1.transaction.addToBackStack(null);
+                                getActivity().getSupportFragmentManager().popBackStack();
+
+
+                                // Create new fragment and transaction
+                                Fragment newFragment = new crop();
+                                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+// Replace whatever is in the fragment_container view with this fragment,
+// and add the transaction to the back stack
+                                transaction.replace(R.id.cropframelayout, newFragment);
+                                transaction.addToBackStack(null);
+
+// Commit the transaction
+                                transaction.commit();
+
+
+                                FrameLayout layout = (FrameLayout) getView().findViewById(R.id.cropframelayout);
+                                layout.removeAllViewsInLayout();
+                                FragmentTransaction ft = getFragmentManager().beginTransaction();
+
+
+
+                                //dialog:
+                                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
+// ...Irrelevant code for customizing the buttons and title
+                                LayoutInflater inflater = getActivity().getLayoutInflater();
+                                View dialogView = inflater.inflate(R.layout.alert_label_editor, null);
+                                dialogBuilder.setView(dialogView);
+
+                                ListView suspectslistview = (ListView) dialogView.findViewById(R.id.listviewmain);
+                                suspectslistview.setAdapter(adapter);
+                                suspectslistview.setVisibility(View.VISIBLE);
+                                AlertDialog alertDialog = dialogBuilder.create();
+                                alertDialog.show();
+                                Log.d("here :|", "onResponse: adapter is set and dialog should be showing  some data eeeeeeeeeewwwwwwwwwwwww");
+
+
+//                            } catch (Exception e) {
+//                            }
+                        }
+                        else{
+                            Toast.makeText(getActivity(), "try another photo", Toast.LENGTH_SHORT).show();
+                        }
+//                a = (ArrayList<ArrayList<Double>>) response.body();
+////                                  Log.d("see response as a:", "onResponse: a is : +" + a[0] + "  " + a[1] + "  " + a[2] + "  " + a[3] + "  ");
+//                for (int i = 0; i < a.size(); i++) {
+////                                    ArrayList<Double> b = new ArrayList();
+////                                    b.add(a.get(i));
+//                    Log.d("see response as a:", "onResponse: a is : +" + a.get(i).get(0) + +a.get(i).get(1) + a.get(i).get(2) + a.get(i).get(3) + " b type is :  ");
+//                }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Object> call, Throwable t) {
+                        Log.d("sendingcropedimage", "sendingcropedimage222222222222222userscoin\nonFailure: post wasn't successfully" + t);
+                    }
+                });
 
 
 
