@@ -45,6 +45,7 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Response;
 
+import static me.littlecheesecake.cropimagelayout.ApiClient.BASE_URL;
 import static me.littlecheesecake.cropimagelayout.Menuactivity.pixx1;
 import static me.littlecheesecake.cropimagelayout.Menuactivity.pixx2;
 import static me.littlecheesecake.cropimagelayout.Menuactivity.pixy1;
@@ -54,8 +55,9 @@ import static me.littlecheesecake.cropimagelayout.Menuactivity.pixy2;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Mainfragment extends Fragment  {
+public class Mainfragment extends Fragment {
 
+    RelativeLayout waitlayout;
     public static TextView boxText3;
     public static ArrayList<ArrayList<Double>> responsephoto = new ArrayList();
     public static int w, h;
@@ -75,6 +77,7 @@ public class Mainfragment extends Fragment  {
     public static Drawable imagetocrop;
     ListView suspectslistview;
     FrameLayout fragmentlayout;
+    ImageView canclebtn;
 
     FragmentTransaction ft1;
     FragmentManager fm1;
@@ -131,7 +134,7 @@ public class Mainfragment extends Fragment  {
 
         final ImageView nextface = (ImageView) getView().findViewById(R.id.nextface);
         final ImageView backface2 = (ImageView) getView().findViewById(R.id.backface2);
-        suspectslistview = (ListView) getView().findViewById(R.id.listview);
+        suspectslistview = (ListView) getView().findViewById(R.id.allnameslistview);
 //        searchsomeone = (Button) getView().findViewById(R.id.searchsomeone);
 
         fragmentlayout = (FrameLayout) getView().findViewById(R.id.cropframelayout);
@@ -145,29 +148,36 @@ public class Mainfragment extends Fragment  {
         back = (ImageView) getView().findViewById(R.id.back);
         titletxt = (TextView) getView().findViewById(R.id.titletxt);
         boxText3 = (TextView) getView().findViewById(R.id.box_text3);
+        canclebtn = (ImageView) getView().findViewById(R.id.canclebtn);
 
-        final String STEP_1, STEP_2, STEP_3_1, STEP_3_2;
+        waitlayout = (RelativeLayout) getView().findViewById(R.id.waitlayout);
+        final String STEP_1, STEP_2, STEP_3_1, STEP_3_2, STEP_4;
         STEP_1 = "Please choose a photo";
         STEP_2 = "Edit and crop";
         STEP_3_1 = "Add to database";
         STEP_3_2 = "Recognize photo";
+        STEP_4 = "Add to database";
         titletxt.setText(STEP_1);
 //        nextface.setVisibility(View.VISIBLE);
         image.setImageDrawable(getResources().getDrawable(R.drawable.anonymous));
-        String[] SamsungPhones = new String[]{"Galaxy S", "Galaxy S2",
-                "Galaxy Note", "Galaxy Beam", "Galaxy Ace Plus", "Galaxy S3",
-                "Galaxy S Advance", "Galaxy Wave 3", "Galaxy Wave Y",
-                "Galaxy Nexus", "Galaxy W", "Galaxy Y", "Galaxy Mini",
-                "Galaxy Gio", "Galaxy Wave", "Galaxy Wave 2"};
 
-        // Locate ListView in listview_main.xml
-        suspectslistview = (ListView) getView().findViewById(R.id.listview);
+//        String[] SamsungPhones = new String[]{"Galaxy S", "Galaxy S2",
+//                "Galaxy Note", "Galaxy Beam", "Galaxy Ace Plus", "Galaxy S3",
+//                "Galaxy S Advance", "Galaxy Wave 3", "Galaxy Wave Y",
+//                "Galaxy Nexus", "Galaxy W", "Galaxy Y", "Galaxy Mini",
+//                "Galaxy Gio", "Galaxy Wave", "Galaxy Wave 2"};
+//
+//        // Bind array strings into an adapter
+//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
+//                android.R.layout.simple_list_item_1, android.R.id.text1,
+//                SamsungPhones);
+//        suspectslistview.setAdapter(adapter);
 
-        // Bind array strings into an adapter
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_list_item_1, android.R.id.text1,
-                SamsungPhones);
-        suspectslistview.setAdapter(adapter);
+//        ProgressBar progressBar = (ProgressBar)getView().findViewById(R.id.spin_kit);
+//        DoubleBounce doubleBounce = new DoubleBounce();
+//        progressBar.setIndeterminateDrawable(doubleBounce);
+
+
 //        mat = new Mat();
 //crop
 
@@ -229,6 +239,12 @@ public class Mainfragment extends Fragment  {
 //                startActivity(i);
 //            }
 //        });
+        canclebtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                waitlayout.setVisibility(View.INVISIBLE);
+            }
+        });
         next.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -239,11 +255,12 @@ public class Mainfragment extends Fragment  {
 
 //                    if (!(image.getBackground().getConstantState() == getResources().getDrawable(R.drawable.anonymous).getConstantState())) {
                     if (photoselection) {
+                        waitlayout.setVisibility(View.VISIBLE);
                         camerabtn.setVisibility(View.INVISIBLE);
                         gallerybtn.setVisibility(View.INVISIBLE);
                         titletxt.setText(STEP_2);
-                        insertbtn.setVisibility(View.VISIBLE);
-                        detectbtn.setVisibility(View.VISIBLE);
+//                        insertbtn.setVisibility(View.VISIBLE);
+//                        detectbtn.setVisibility(View.VISIBLE);
                         next.setVisibility(View.INVISIBLE);
 
 
@@ -252,9 +269,9 @@ public class Mainfragment extends Fragment  {
                             public void onClick(View view) {
                                 counter++;
 //                                boxText3.setText("cropint " + (responsephoto.size() - counter + 1) + "th face");
-                                if (counter < responsephoto.size() && responsephoto.size()!=1) {
+                                if (counter < responsephoto.size() && responsephoto.size() != 1) {
                                     backface2.setVisibility(View.VISIBLE);
-                                    Toast.makeText(getActivity(), "counnter is :" + counter, Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getActivity(), "counter is :" + counter, Toast.LENGTH_SHORT).show();
                                     try {
                                         fragment1 = new crop();
                                         Bundle bundle = new Bundle();
@@ -336,7 +353,7 @@ public class Mainfragment extends Fragment  {
                             }
                         });
 
-                        bmp32 = cameraphoto.copy(Bitmap.Config.RGB_565, true);
+                        bmp32 = imagetocrop2.copy(Bitmap.Config.RGB_565, true);
                         Utils.bitmapToMat(bmp32, mat);
                         Log.d("wwwwwwwwwwwww", "onClick: mat.size is :" + mat.rows() + "       " + mat.cols());
 
@@ -348,9 +365,9 @@ public class Mainfragment extends Fragment  {
 //                            rows.clear();
                             for (int j = 0; j < mat.cols(); j++) {
 
-                                cols[i][j][0] = mat.get(i, j)[0];
+                                cols[i][j][2] = mat.get(i, j)[0];
                                 cols[i][j][1] = mat.get(i, j)[1];
-                                cols[i][j][2] = mat.get(i, j)[2];
+                                cols[i][j][0] = mat.get(i, j)[2];
 
                             }
 //                            cols.add(rows);
@@ -358,16 +375,22 @@ public class Mainfragment extends Fragment  {
 
                         Log.d("here", "onClick: see cols" + cols);
 
+                        waitlayout.setVisibility(View.VISIBLE);
                         RequestInterface totalscoreservice2 = ApiClient.getClient().create(RequestInterface.class);
                         //[[responsephoto,b,c,d]]
                         Call<Object> calltotalscore2 = totalscoreservice2.callcontent2(cols);
                         calltotalscore2.enqueue(new retrofit2.Callback<Object>() {
                             @Override
                             public void onResponse(Call<Object> call, Response<Object> response) {
-                                Log.d("wwwwwwwwwwwwwwwwww", "222222222222222onResponse: you are inside on response:  " + response.message()
-                                        + " response body is :  " + response.body());
-                                Log.d("wwwwwwwwwwwwwwwwww", "222222222222222onResponse: response is being done");
-                                Toast.makeText(getActivity(), "the response " + response.body(), Toast.LENGTH_LONG).show();
+                                if (titletxt.getText() == STEP_2){
+                                    insertbtn.setVisibility(View.VISIBLE);
+                                    detectbtn.setVisibility(View.VISIBLE);
+                                    waitlayout.setVisibility(View.INVISIBLE);
+
+                                    Log.d("wwwwwwwwwwwwwwwwww", "222222222222222onResponse: you are inside on response:  " + response.message()
+                                            + " response body is :  " + response.body());
+                                    Log.d("wwwwwwwwwwwwwwwwww", "222222222222222onResponse: response is being done");
+                                    Toast.makeText(getActivity(), "the response " + response.body(), Toast.LENGTH_LONG).show();
 //
 //                                A[] responsephoto = new A[response.body().length];
 //                                int i = 0;
@@ -376,10 +399,10 @@ public class Mainfragment extends Fragment  {
 //                                }
 
 //                              try{
-                                responsephoto = (ArrayList<ArrayList<Double>>) response.body();
-                                if (responsephoto.size() > 1) {
-                                    nextface.setVisibility(View.VISIBLE);
-                                }
+                                    responsephoto = (ArrayList<ArrayList<Double>>) response.body();
+                                    if (responsephoto.size() > 1) {
+                                        nextface.setVisibility(View.VISIBLE);
+                                    }
 //                                  Log.d("see response as responsephoto:", "onResponse: responsephoto is : +" + responsephoto[0] + "  " + responsephoto[1] + "  " + responsephoto[2] + "  " + responsephoto[3] + "  ");
 //                                for (int i = 0; i < responsephoto.size(); i++) {
 ////                                    ArrayList<Double> b = new ArrayList();
@@ -393,20 +416,23 @@ public class Mainfragment extends Fragment  {
 //                                ft1.commit();
 
 //                              }catch (Exception e){}
-                                fragment1 = new crop();
-                                Bundle bundle = new Bundle();
-                                fragment1.setArguments(bundle);
-                                counter = 0;
-                                try {
-                                    bundle.putInt("y1", responsephoto.get(counter).get(0).intValue());
-                                    bundle.putInt("x2", responsephoto.get(counter).get(1).intValue());
-                                    bundle.putInt("y2", responsephoto.get(counter).get(2).intValue());
-                                    bundle.putInt("x1", responsephoto.get(counter).get(3).intValue());
-                                    fm1 = getActivity().getSupportFragmentManager();
-                                    ft1 = fm1.beginTransaction();
-                                    ft1.replace(R.id.cropframelayout, fragment1);
-                                    ft1.commit();
-                                } catch (Exception e) {
+                                    fragment1 = new crop();
+                                    Bundle bundle = new Bundle();
+                                    fragment1.setArguments(bundle);
+                                    counter = 0;
+                                    try {
+                                        bundle.putInt("y1", responsephoto.get(counter).get(0).intValue());
+                                        bundle.putInt("x2", responsephoto.get(counter).get(1).intValue());
+                                        bundle.putInt("y2", responsephoto.get(counter).get(2).intValue());
+                                        bundle.putInt("x1", responsephoto.get(counter).get(3).intValue());
+                                        fm1 = getActivity().getSupportFragmentManager();
+                                        ft1 = fm1.beginTransaction();
+                                        ft1.replace(R.id.cropframelayout, fragment1);
+
+                                        ft1.commit();
+                                    } catch (Exception e) {
+                                    }
+
                                 }
 
                             }
@@ -414,16 +440,83 @@ public class Mainfragment extends Fragment  {
                             @Override
                             public void onFailure(Call<Object> call, Throwable t) {
                                 Log.d("wwwwwwwwwwwwwwwwww", "222222222222222userscoin\nonFailure: post wasn't successfully" + t);
+                                waitlayout.setVisibility(View.INVISIBLE);
+                                Toast.makeText(getActivity(), "request failed \n" + t, Toast.LENGTH_SHORT).show();
                             }
                         });
 
 
+
                     } else {
-                        Toast.makeText(getActivity(), "Please choose responsephoto photo", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "Please choose a photo", Toast.LENGTH_SHORT).show();
                     }
                 }
 //                java.lang.IllegalStateException: Expected responsephoto string but was BEGIN_ARRAY at line 1 column 2 path $
+                if (titletxt.getText() == STEP_4) {
+                    Log.d("inserting", "sendText:  " + pixx1 + "    " + pixy1 + "    " + pixx2 + "    " + pixy2);
+//                    if (pixx1 == 0 && pixx2 == 0 && pixy1 == 0 && pixy2 == 0) {
 
+//                        if (responsephoto != null) {
+                            pixy1 = responsephoto.get(counter).get(0).intValue();
+                            pixx2 = responsephoto.get(counter).get(1).intValue();
+                            pixy2 = responsephoto.get(counter).get(2).intValue();
+                            pixx1 = responsephoto.get(counter).get(3).intValue();
+//                        } else {
+//
+//                            Toast.makeText(getActivity(), "no face detected", Toast.LENGTH_SHORT).show();
+//                        }
+
+
+//                    }
+                    Log.d("inserting", "sendText:  " + pixx1 + "    " + pixy1 + "    " + pixx2 + "    " + pixy2);
+
+
+                    bmp32 = imagetocrop2.copy(Bitmap.Config.RGB_565, true);
+                    Utils.bitmapToMat(bmp32, mat);
+                    Log.d("inserting", "sendText: mat array is :" + mat.rows() + "   " + mat.cols());
+
+                    double[][][] colstoinsert = new double[pixy2 - pixy1][pixx2 - pixx1][3];
+                    for (int i = pixy1, o = 0; o < pixy2 - pixy1 && i < pixy2; o++, i++) {
+//                            rows.clear();
+                        for (int j = pixx1, p = 0; p < pixx2 - pixx1 && j < pixx2; p++, j++) {
+
+                            colstoinsert[o][p][2] = mat.get(i, j)[0];
+                            colstoinsert[o][p][1] = mat.get(i, j)[1];
+                            colstoinsert[o][p][0] = mat.get(i, j)[2];
+
+                        }
+//                            cols.add(rows);
+                    }
+
+
+                    Log.d("inserting", "onClick: this is insertcols:"+colstoinsert);
+                    waitlayout.setVisibility(View.VISIBLE);
+                    RequestInterface insertrequest = ApiClient.getClient().create(RequestInterface.class);
+                    //[[responsephoto,b,c,d]]
+                    Call<Object> insertrequestcall = insertrequest.insertface(BASE_URL + nameedittext.getText().toString().toLowerCase(), colstoinsert);
+                    Log.d("inserting", "onClick: the url is " + BASE_URL + nameedittext.getText().toString().toLowerCase());
+                    insertrequestcall.enqueue(new retrofit2.Callback<Object>() {
+                        @Override
+                        public void onResponse(Call<Object> call, Response<Object> response) {
+                            waitlayout.setVisibility(View.INVISIBLE);
+
+                            Log.d("inserting", "inserting: you are inside on response:  " + response.message()
+                                    + " response body is :  " + response.body());
+                            Log.d("inserting", "inserting: response is being done");
+                            Toast.makeText(getActivity(), "the response " + response.body() +"\n"+ response.message(), Toast.LENGTH_LONG).show();
+//
+                        }
+
+                        @Override
+                        public void onFailure(Call<Object> call, Throwable t) {
+                            Log.d("inserting", "inserting\nonFailure: post wasn't successfully" + t);
+                            waitlayout.setVisibility(View.INVISIBLE);
+                            Toast.makeText(getActivity(), "request failed \n" + t, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+
+                }
             }
         });
         back.setOnClickListener(new View.OnClickListener() {
@@ -443,10 +536,11 @@ public class Mainfragment extends Fragment  {
                     detectbtn.setVisibility(View.INVISIBLE);
                     next.setVisibility(View.VISIBLE);
                     nextface.setVisibility(View.INVISIBLE);
+                    backface2.setVisibility(View.INVISIBLE);
 //                    ft1.remove(fragment1);
 
                     try {
-                        if (!ft1.isEmpty()){
+                        if (!ft1.isEmpty()) {
                             ft1.remove(fragment1);
                             getActivity().getSupportFragmentManager().beginTransaction().remove(fragment1).commit();
                             getFragmentManager().beginTransaction().remove(fragment1).commitAllowingStateLoss();
@@ -497,10 +591,25 @@ public class Mainfragment extends Fragment  {
             @Override
             public void onClick(View view) {
                 YoYo.with(Techniques.Tada).duration(500).repeat(0).playOn(view);
+                Log.d("sendingcropedimage", "sendText:  " + pixx1 + "    " + pixy1 + "    " + pixx2 + "    " + pixy2);
+                if (pixx1 == 0 && pixx2 == 0 && pixy1 == 0 && pixy2 == 0) {
 
-                Log.d("sendingcropedimage", "sendText:  " + pixx1 + "    " + pixy1+ "    " + pixx2+ "    " + pixy2);
+                    if (responsephoto != null) {
+                        pixy1 = responsephoto.get(counter).get(0).intValue();
+                        pixx2 = responsephoto.get(counter).get(1).intValue();
+                        pixy2 = responsephoto.get(counter).get(2).intValue();
+                        pixx1 = responsephoto.get(counter).get(3).intValue();
+                    } else {
 
-                bmp32 = cameraphoto.copy(Bitmap.Config.RGB_565, true);
+                        Toast.makeText(getActivity(), "no face detected", Toast.LENGTH_SHORT).show();
+                    }
+
+
+                }
+                Log.d("sendingcropedimage", "sendText:  " + pixx1 + "    " + pixy1 + "    " + pixx2 + "    " + pixy2);
+
+
+                bmp32 = imagetocrop2.copy(Bitmap.Config.RGB_565, true);
                 Utils.bitmapToMat(bmp32, mat);
                 Log.d("sendingcropedimage", "sendText: mat array is :" + mat.rows() + "   " + mat.cols());
 
@@ -509,15 +618,16 @@ public class Mainfragment extends Fragment  {
 //                            rows.clear();
                     for (int j = pixx1, p = 0; p < pixx2 - pixx1 && j < pixx2; p++, j++) {
 
-                        cols[o][p][0] = mat.get(i, j)[0];
+                        cols[o][p][2] = mat.get(i, j)[0];
                         cols[o][p][1] = mat.get(i, j)[1];
-                        cols[o][p][2] = mat.get(i, j)[2];
+                        cols[o][p][0] = mat.get(i, j)[2];
 
                     }
 //                            cols.add(rows);
                 }
 
 
+                waitlayout.setVisibility(View.VISIBLE);
                 RequestInterface totalscoreservice2 = ApiClient.getClient().create(RequestInterface.class);
                 Call<Object> calltotalscore2 = totalscoreservice2.callrecognize(cols);
                 Log.d("sendingcropedimage", "sendingcropedimage request is going to be sent ");
@@ -525,85 +635,85 @@ public class Mainfragment extends Fragment  {
                 calltotalscore2.enqueue(new retrofit2.Callback<Object>() {
                     @Override
                     public void onResponse(Call<Object> call, Response<Object> response) {
+                        waitlayout.setVisibility(View.INVISIBLE);
                         Log.d("sendingcropedimage", "sendingcropedimage222222222222222onResponse: you are inside on response:  " + response.message()
                                 + " response body is :  " + response.body());
 
                         if (response.body() != null) {
-                                List<List> suspects = new ArrayList();
-                                suspects = (List<List>) response.body();
+                            List<List> suspects = new ArrayList();
+                            suspects = (List<List>) response.body();
 //                Log.d("sendingcropedimage", "onResponse: " + suspects.get(0).get(0));
 
-                                Log.d("sendingcropedimage", "sendingcropedimage222222222222222onResponse: response is being done");
-                                Toast.makeText(getActivity(), "the response " + response.body(), Toast.LENGTH_LONG).show();
+                            Log.d("sendingcropedimage", "sendingcropedimage222222222222222onResponse: response is being done");
+//                            Toast.makeText(getActivity(), "the response " + response.body(), Toast.LENGTH_LONG).show();
 
-                                String[] values = new String[suspects.size()];
+                            String[] values = new String[suspects.size()];
 //                values[0] = String.valueOf(suspects.get(0));
-                                for (int i = 0; i < suspects.size(); i++) {
-                                    values[i] = String.valueOf(suspects.get(i).get(0)) + "\n" + String.valueOf(suspects.get(i).get(1));
+                            for (int i = 0; i < suspects.size(); i++) {
+                                values[i] = String.valueOf(suspects.get(i).get(0)) + "\n" + String.valueOf(suspects.get(i).get(1));
 
-                                }
+                            }
 //                                suspectslistview = (ListView) getView().findViewById(R.id.listviewmain);
 //
 //                                // Bind array strings into an adapter
-                                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
-                                        android.R.layout.simple_list_item_1, android.R.id.text1,
-                                        values);
+                            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
+                                    android.R.layout.simple_list_item_1, android.R.id.text1,
+                                    values);
 //                                suspectslistview.setAdapter(adapter);
 //                                suspectslistview.setVisibility(View.VISIBLE);
 
 //                            image.setVisibility(View.INVISIBLE);
 
 
-                                //                                ft1.remove(fragment1).commit();
+                            //removing fragment:
+                            //                                ft1.remove(fragment1).commit();
 //                                fragmentlayout.setVisibility(View.INVISIBLE);
 //                                ft1.hide(fragment1);
 
-                                ft1.remove(fragment1);
-                                getActivity().getSupportFragmentManager().beginTransaction().remove(fragment1).commit();
-                                getFragmentManager().beginTransaction().remove(fragment1).commitAllowingStateLoss();
-//                        ft1.transaction.addToBackStack(null);
-                                getActivity().getSupportFragmentManager().popBackStack();
+//                            ft1.remove(fragment1);
+//                            getActivity().getSupportFragmentManager().beginTransaction().remove(fragment1).commit();
+//                            getFragmentManager().beginTransaction().remove(fragment1).commitAllowingStateLoss();
+////                        ft1.transaction.addToBackStack(null);
+//                            getActivity().getSupportFragmentManager().popBackStack();
+//
+//
+//                            // Create new fragment and transaction
+//                            Fragment newFragment = new crop();
+//                            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+//
+//// Replace whatever is in the fragment_container view with this fragment,
+//// and add the transaction to the back stack
+//                            transaction.replace(R.id.cropframelayout, newFragment);
+//                            transaction.addToBackStack(null);
+//
+//// Commit the transaction
+//                            transaction.commit();
+//
+//
+//                            FrameLayout layout = (FrameLayout) getView().findViewById(R.id.cropframelayout);
+//                            layout.removeAllViewsInLayout();
+//                            FragmentTransaction ft = getFragmentManager().beginTransaction();
 
 
-                                // Create new fragment and transaction
-                                Fragment newFragment = new crop();
-                                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-
-// Replace whatever is in the fragment_container view with this fragment,
-// and add the transaction to the back stack
-                                transaction.replace(R.id.cropframelayout, newFragment);
-                                transaction.addToBackStack(null);
-
-// Commit the transaction
-                                transaction.commit();
-
-
-                                FrameLayout layout = (FrameLayout) getView().findViewById(R.id.cropframelayout);
-                                layout.removeAllViewsInLayout();
-                                FragmentTransaction ft = getFragmentManager().beginTransaction();
-
-
-
-                                //dialog:
-                                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
+                            //dialog:
+                            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
 // ...Irrelevant code for customizing the buttons and title
-                                LayoutInflater inflater = getActivity().getLayoutInflater();
-                                View dialogView = inflater.inflate(R.layout.alert_label_editor, null);
-                                dialogBuilder.setView(dialogView);
+                            LayoutInflater inflater = getActivity().getLayoutInflater();
+                            View dialogView = inflater.inflate(R.layout.alert_label_editor, null);
+                            dialogBuilder.setView(dialogView);
 
-                                ListView suspectslistview = (ListView) dialogView.findViewById(R.id.listviewmain);
-                                suspectslistview.setAdapter(adapter);
-                                suspectslistview.setVisibility(View.VISIBLE);
-                                AlertDialog alertDialog = dialogBuilder.create();
-                                alertDialog.show();
-                                Log.d("here :|", "onResponse: adapter is set and dialog should be showing  some data eeeeeeeeeewwwwwwwwwwwww");
+                            ListView suspectslistview = (ListView) dialogView.findViewById(R.id.listviewmain);
+                            suspectslistview.setAdapter(adapter);
+                            suspectslistview.setVisibility(View.VISIBLE);
+                            AlertDialog alertDialog = dialogBuilder.create();
+                            alertDialog.show();
+                            Log.d("here :|", "onResponse: adapter is set and dialog should be showing  some data eeeeeeeeeewwwwwwwwwwwww");
 
 
 //                            } catch (Exception e) {
 //                            }
-                        }
-                        else{
-                            Toast.makeText(getActivity(), "try another photo", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getActivity(), "try another photo \n" + response.message(), Toast.LENGTH_SHORT).show();
                         }
 //                a = (ArrayList<ArrayList<Double>>) response.body();
 ////                                  Log.d("see response as a:", "onResponse: a is : +" + a[0] + "  " + a[1] + "  " + a[2] + "  " + a[3] + "  ");
@@ -616,11 +726,11 @@ public class Mainfragment extends Fragment  {
 
                     @Override
                     public void onFailure(Call<Object> call, Throwable t) {
+                        waitlayout.setVisibility(View.INVISIBLE);
+                        Toast.makeText(getActivity(), "request failed \n" + t, Toast.LENGTH_SHORT).show();
                         Log.d("sendingcropedimage", "sendingcropedimage222222222222222userscoin\nonFailure: post wasn't successfully" + t);
                     }
                 });
-
-
 
 
             }
@@ -686,47 +796,61 @@ public class Mainfragment extends Fragment  {
                 params.addRule(RelativeLayout.BELOW, R.id.imageView);
                 params.addRule(RelativeLayout.LEFT_OF, R.id.centerdot);
                 camerabtn.setLayoutParams(params);
-                camerabtn.getLayoutParams().height = 180;
-                camerabtn.getLayoutParams().width = 110;
+                camerabtn.getLayoutParams().height = 160;
+                camerabtn.getLayoutParams().width = 120;
 
 
                 RelativeLayout.LayoutParams params2 = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 params2.addRule(RelativeLayout.BELOW, R.id.imageView);
                 params2.addRule(RelativeLayout.RIGHT_OF, R.id.centerdot);
                 gallerybtn.setLayoutParams(params2);
-                gallerybtn.getLayoutParams().height = 180;
-                gallerybtn.getLayoutParams().width = 110;
+                gallerybtn.getLayoutParams().height = 160;
+                gallerybtn.getLayoutParams().width = 120;
                 imagetocrop = new BitmapDrawable(getResources(), cameraphoto);
 
             } catch (Exception e) {
             }
 
 
-        } else if (reqCode == RESULT_OK)
-
-        {
+        } else if (reqCode == RESULT_OK) {
             try {
-                final Uri imageUri = data.getData();
-                final InputStream imageStream = getActivity().getContentResolver().openInputStream(imageUri);
-                selectedImage = BitmapFactory.decodeStream(imageStream);
-                image.setImageBitmap(selectedImage);
-                image.setVisibility(View.VISIBLE);
-                imagetocrop2 = selectedImage;
-                imagetocrop = new BitmapDrawable(getResources(), selectedImage);
+                if (data != null) {
+
+                    final Uri imageUri = data.getData();
+                    final InputStream imageStream = getActivity().getContentResolver().openInputStream(imageUri);
+                    selectedImage = BitmapFactory.decodeStream(imageStream);
+                    image.setImageBitmap(selectedImage);
+                    image.setVisibility(View.VISIBLE);
+                    imagetocrop2 = (Bitmap) selectedImage;
+//                imagetocrop2 = getResizedBitmap(selectedImage,selectedImage.getWidth(),selectedImage.getHeight());
+                    imagetocrop2 = Bitmap.createScaledBitmap(selectedImage, selectedImage.getWidth() / 10, selectedImage.getHeight() / 10, false);
+                    image.setImageBitmap(imagetocrop2);
+                    imagetocrop = new BitmapDrawable(getResources(), selectedImage);
 
 //                image.setBackgroundDrawable(ob);
+                    RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    params.addRule(RelativeLayout.BELOW, R.id.imageView);
+                    params.addRule(RelativeLayout.LEFT_OF, R.id.centerdot);
+                    camerabtn.setLayoutParams(params);
+                    camerabtn.getLayoutParams().height = 180;
+                    camerabtn.getLayoutParams().width = 110;
+
+
+                    RelativeLayout.LayoutParams params2 = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    params2.addRule(RelativeLayout.BELOW, R.id.imageView);
+                    params2.addRule(RelativeLayout.RIGHT_OF, R.id.centerdot);
+                    gallerybtn.setLayoutParams(params2);
+                    gallerybtn.getLayoutParams().height = 180;
+                    gallerybtn.getLayoutParams().width = 110;
+                    imagetocrop = new BitmapDrawable(getResources(), cameraphoto);
+                }
 
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
-                Toast.makeText(getActivity(), "Something went wrong", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "You haven't picked Image", Toast.LENGTH_LONG).show();
             }
 
-        } else
-
-        {
-            Toast.makeText(getActivity(), "You haven't picked Image", Toast.LENGTH_LONG).show();
         }
     }
-
 
 }

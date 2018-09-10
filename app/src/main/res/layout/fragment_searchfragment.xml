@@ -5,6 +5,31 @@
     android:layout_height="match_parent"
     android:background="@color/background"
     tools:context=".Searchfragment">
+    <RelativeLayout
+        android:id="@+id/waitlayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#88000000"
+        android:translationZ="20dp"
+        android:visibility="invisible">
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:src="@drawable/cancel"
+            android:layout_margin="20dp"
+            android:id="@+id/canclebtn"/>
+
+        <com.github.ybq.android.spinkit.SpinKitView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/spin_kit"
+            style="@style/SpinKitView.Large.ThreeBounce"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            app:SpinKit_Color="@color/colorAccent" />
+    </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -45,6 +70,7 @@
             <!--android:background="#00444444" />-->
 
         <ListView
+            android:layout_centerHorizontal="true"
             android:id="@+id/searchlistview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

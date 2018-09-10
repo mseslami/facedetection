@@ -12,7 +12,7 @@
         android:layout_marginLeft="22dp"
         android:layout_toLeftOf="@id/name"
         android:layout_marginTop="41dp"
-        android:text="name" />
+        android:visibility="invisible"/>
 
 
     <ImageView
@@ -20,7 +20,6 @@
         android:id="@+id/imageView1"
         android:layout_width="170dp"
         android:layout_height="170dp"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="10dp" />
+    android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

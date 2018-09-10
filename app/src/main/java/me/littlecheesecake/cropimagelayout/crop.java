@@ -63,6 +63,7 @@ public class crop extends Fragment {
         imageView = (EditPhotoView) getView().findViewById(R.id.editable_image);
         final TextView boxText = (TextView) getView().findViewById(R.id.box_text);
         final TextView boxText2 = (TextView) getView().findViewById(R.id.box_text2);
+        boxText2.setVisibility(View.INVISIBLE);
 //        ImageView nextface = (ImageView) getView().findViewById(R.id.nextface);
 
         boxText2.setText(responsephoto.size() + " FACES ARE FOUND");
@@ -109,7 +110,9 @@ public class crop extends Fragment {
             boxes.add(box2);
             boxes.add(box3);
             image.setBoxes(boxes);
+
             imageView.initView(getActivity(), image);
+
 
             boxText.setText("box: [" + x1 + "    " + y1 + "    " +
                     x2 + "    " + y2 + "    ]");
@@ -127,7 +130,7 @@ public class crop extends Fragment {
             });
 
         } catch (Exception e) {
-            Toast.makeText(getActivity(), "no fase is found :(", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getActivity(), " error :(", Toast.LENGTH_SHORT).show();
         }
 
 

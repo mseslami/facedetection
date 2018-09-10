@@ -41,4 +41,8 @@ dependencies {
     implementation project(':openCVLibrary342')
 //menu:
     implementation 'devlight.io:navigationtabbar:1.2.5'
+
+    //progress view:
+    implementation 'com.github.ybq:Android-SpinKit:1.1.0'
+
 }
