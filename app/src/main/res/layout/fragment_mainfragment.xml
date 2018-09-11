@@ -5,9 +5,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
-    tools:context=".Mainfragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".Mainfragment"
+    android:background="#00000000"
+    >
 
+
+    <!--<com.ocnyang.contourview.ContourView-->
+        <!--android:translationZ="30dp"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--app:contour_style="Sand"-->
+        <!--app:shader_endcolor="#fa3f3f"-->
+        <!--app:shader_mode="RadialGradient"-->
+        <!--app:shader_startcolor="#f29509"-->
+        <!--app:shader_style="Center"-->
+        <!--app:smoothness="0.2"-->
+        <!--android:id="@+id/backview"/>-->
 
     <RelativeLayout
         android:id="@+id/waitlayout"
@@ -16,14 +30,15 @@
         android:background="#88000000"
         android:translationZ="20dp"
         android:visibility="invisible">
+
         <ImageView
+            android:id="@+id/canclebtn"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:src="@drawable/cancel"
             android:layout_margin="20dp"
-            android:id="@+id/canclebtn"/>
+            android:src="@drawable/cancel" />
 
         <com.github.ybq.android.spinkit.SpinKitView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/spin_kit"
@@ -58,7 +73,7 @@
             android:layout_height="410dp"
             android:layout_below="@+id/nextface"
             android:layout_centerHorizontal="true"
-            android:translationZ="4dp"/>
+            android:translationZ="4dp" />
 
         <!--<com.github.ybq.android.spinkit.SpinKitView-->
         <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
@@ -176,24 +191,30 @@
             android:visibility="gone" />
 
 
-        <ImageView
+        <Button
             android:id="@+id/next"
+            style="@style/Button"
             android:layout_width="90dp"
-            android:layout_height="60dp"
+            android:layout_height="40dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
+            android:layout_margin="5dp"
             android:layout_marginRight="-10dp"
-            android:src="@drawable/next2" />
+            android:text="next"
+            android:background="@drawable/buttonshape"/>
 
-        <ImageView
+        <Button
+            android:background="@drawable/back"
             android:id="@+id/back"
+            style="@style/Button"
             android:layout_width="90dp"
             android:layout_height="60dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
+            android:layout_margin="5dp"
             android:layout_marginLeft="-10dp"
-            android:src="@drawable/back"
-            android:visibility="invisible" />
+            android:text="back"
+            android:visibility="visible" />
 
         <EditText
             android:id="@+id/nameedittext"
@@ -202,8 +223,8 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:hint="Enter name"
-            android:visibility="invisible"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:visibility="invisible" />
 
 
     </RelativeLayout>

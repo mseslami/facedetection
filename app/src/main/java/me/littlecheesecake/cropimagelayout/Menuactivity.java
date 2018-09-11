@@ -2,13 +2,17 @@ package me.littlecheesecake.cropimagelayout;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.LinearInterpolator;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import org.opencv.android.Utils;
@@ -33,6 +37,13 @@ public class Menuactivity extends AppCompatActivity implements crop.TextClicked 
         setContentView(R.layout.activity_menuactivity);
 
 
+//        LinearLayout container = (LinearLayout) findViewById(R.id.background);
+//        AnimationDrawable anim = (AnimationDrawable) container.getBackground();
+//        anim.setEnterFadeDuration(1700);
+//        anim.setExitFadeDuration(1700);
+//        anim.start();
+
+
         initUI();
 
     }
@@ -46,11 +57,12 @@ public class Menuactivity extends AppCompatActivity implements crop.TextClicked 
         final String[] colors = getResources().getStringArray(R.array.default_preview);
 
         navigationTabBar = (NavigationTabBar) findViewById(R.id.ntb_horizontal);
+        navigationTabBar.setBackgroundColor(Color.RED);
         final ArrayList<NavigationTabBar.Model> models = new ArrayList<>();
         models.add(
                 new NavigationTabBar.Model.Builder(
                         getResources().getDrawable(R.drawable.facedetection),
-                        Color.parseColor(colors[0]))
+                        Color.parseColor("#55000000"))
 //                        .selectedIcon(getResources().getDrawable(R.drawable.ic_sixth))
                         .title("camera")
                         .build()
@@ -58,7 +70,7 @@ public class Menuactivity extends AppCompatActivity implements crop.TextClicked 
         models.add(
                 new NavigationTabBar.Model.Builder(
                         getResources().getDrawable(R.drawable.searchicon),
-                        Color.parseColor(colors[1]))
+                        Color.parseColor("#55000000"))
 //                        .selectedIcon(getResources().getDrawable(R.drawable.ic_eighth))
                         .title("search")
 //                        .badgeTitle("hi hi")

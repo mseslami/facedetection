@@ -24,6 +24,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ocnyang.contourview.ContourView;
+
 import org.opencv.android.Utils;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
@@ -226,6 +228,17 @@ public class Searchfragment extends Fragment {
 
     }
 
+//    private void initCustomContourView() {
+//        ContourView contourViewCustom = (ContourView) getView().findViewById(R.id.backview);
+//        int width = 400;//获取屏幕的宽度
+//        int hight = 400;
+//        int[] ints = {width / 2, 0, width, hight / 2, width / 2, hight, 0, hight / 2};
+//        int[] intArr = new int[]{width / 2, hight / 4, width / 4 * 3, hight / 2, width / 2, hight / 4 * 3, width / 4, hight / 2};
+//        contourViewCustom.setPoints(ints, intArr);
+//        contourViewCustom.setShaderStartColor(getResources().getColor(R.color.background));
+//        contourViewCustom.setShaderEndColor(getResources().getColor(R.color.colorAccent));
+//        contourViewCustom.setShaderMode(ContourView.SHADER_MODE_RADIAL);
+//    }
 
 }
 

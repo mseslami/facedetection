@@ -4,6 +4,7 @@ package me.littlecheesecake.cropimagelayout;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -69,7 +70,8 @@ public class Mainfragment extends Fragment {
     Bitmap selectedImage;
     public static Bitmap imagetocrop2;
     static String datatopost;
-    static public ImageView image, next, back;
+    static public ImageView image;
+    Button next, back;
     TextView titletxt;
     EditText nameedittext;
     boolean photoselection = false;
@@ -144,8 +146,8 @@ public class Mainfragment extends Fragment {
         detectbtn = (Button) getView().findViewById(R.id.detectbtn);
         nameedittext = (EditText) getView().findViewById(R.id.nameedittext);
         image = (ImageView) getView().findViewById(R.id.imageView);
-        next = (ImageView) getView().findViewById(R.id.next);
-        back = (ImageView) getView().findViewById(R.id.back);
+        next = (Button) getView().findViewById(R.id.next);
+        back = (Button) getView().findViewById(R.id.back);
         titletxt = (TextView) getView().findViewById(R.id.titletxt);
         boxText3 = (TextView) getView().findViewById(R.id.box_text3);
         canclebtn = (ImageView) getView().findViewById(R.id.canclebtn);
@@ -160,6 +162,8 @@ public class Mainfragment extends Fragment {
         titletxt.setText(STEP_1);
 //        nextface.setVisibility(View.VISIBLE);
         image.setImageDrawable(getResources().getDrawable(R.drawable.anonymous));
+
+
 
 //        String[] SamsungPhones = new String[]{"Galaxy S", "Galaxy S2",
 //                "Galaxy Note", "Galaxy Beam", "Galaxy Ace Plus", "Galaxy S3",

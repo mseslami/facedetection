@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "me.littlecheesecake.cropimagelayout"
-        minSdkVersion 14
+        minSdkVersion 16
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
@@ -44,5 +44,12 @@ dependencies {
 
     //progress view:
     implementation 'com.github.ybq:Android-SpinKit:1.1.0'
+
+    //backgournd :
+    implementation 'com.ocnyang:contourview:1.0.0'
+
+    //textview:
+    implementation 'hanks.xyz:htextview-library:0.1.5'
+
 
 }
