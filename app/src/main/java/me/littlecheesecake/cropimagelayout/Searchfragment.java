@@ -24,7 +24,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ocnyang.contourview.ContourView;
 
 import org.opencv.android.Utils;
 import org.opencv.core.CvType;

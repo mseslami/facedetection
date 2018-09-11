@@ -34,7 +34,7 @@ public class Splashscreen extends AppCompatActivity {
 
         HTextView hTextView2 = (HTextView) findViewById(R.id.text2);
         hTextView2.setAnimateType(HTextViewType.ANVIL);
-        hTextView2.animateText("OXford Word Skills"); // animate
+        hTextView2.animateText("مرکز تخصصی آپا دانشگاه قم"); // animate
 
 
 
