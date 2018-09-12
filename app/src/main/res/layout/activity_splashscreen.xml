@@ -20,19 +20,29 @@
             android:id="@+id/logoid"
             android:layout_centerInParent="true"/>
 
-        <com.hanks.htextview.HTextView
-            android:id="@+id/text2"
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:background="#00000000"
-            android:textSize="40dp"
-            htext:animateType="line"
-            android:text="Oxford Word Skills"
-            android:layout_centerHorizontal="true"
-            android:textStyle="italic"
-            android:fontFamily="serif-monospace"
             android:layout_below="@id/logoid"
-            />
+            android:id="@+id/apatxt"
+            android:layout_centerHorizontal="true"
+            android:text="مرکز تخصصی آپا دانشگاه قم"
+            android:textSize="25dp"
+            android:fontFamily="serif"
+            android:textStyle="bold"/>
+        <!--<com.hanks.htextview.HTextView-->
+            <!--android:id="@+id/text2"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:textAlignment="center"-->
+            <!--android:background="#00000000"-->
+            <!--android:textSize="40dp"-->
+            <!--htext:animateType="line"-->
+            <!--android:text="Oxford Word Skills"-->
+            <!--android:layout_centerHorizontal="true"-->
+            <!--android:textStyle="italic"-->
+            <!--android:fontFamily="serif-monospace"-->
+            <!--android:layout_below="@id/logoid"-->
+            <!--/>-->
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>
