@@ -61,14 +61,6 @@ public class Menuactivity extends AppCompatActivity implements crop.TextClicked 
         final ArrayList<NavigationTabBar.Model> models = new ArrayList<>();
         models.add(
                 new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.facedetection),
-                        Color.parseColor("#55000000"))
-//                        .selectedIcon(getResources().getDrawable(R.drawable.ic_sixth))
-                        .title("camera")
-                        .build()
-        );
-        models.add(
-                new NavigationTabBar.Model.Builder(
                         getResources().getDrawable(R.drawable.searchicon),
                         Color.parseColor("#55000000"))
 //                        .selectedIcon(getResources().getDrawable(R.drawable.ic_eighth))
@@ -76,10 +68,27 @@ public class Menuactivity extends AppCompatActivity implements crop.TextClicked 
 //                        .badgeTitle("hi hi")
                         .build()
         );
+        models.add(
+                new NavigationTabBar.Model.Builder(
+                        getResources().getDrawable(R.drawable.facedetection),
+                        Color.parseColor("#55000000"))
+//                        .selectedIcon(getResources().getDrawable(R.drawable.ic_sixth))
+                        .title("camera")
+                        .build()
+        );
 
+        models.add(
+                new NavigationTabBar.Model.Builder(
+                        getResources().getDrawable(R.drawable.apa),
+                        Color.parseColor("#55000000"))
+//                        .selectedIcon(getResources().getDrawable(R.drawable.ic_eighth))
+                        .title("about us")
+//                        .badgeTitle("hi hi")
+                        .build()
+        );
         navigationTabBar.setIsBadged(false);
         navigationTabBar.setModels(models);
-        navigationTabBar.setViewPager(viewPager, 0);
+        navigationTabBar.setViewPager(viewPager, 1);
         navigationTabBar.setTitleMode(NavigationTabBar.TitleMode.ACTIVE);
         navigationTabBar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,9 +136,9 @@ public class Menuactivity extends AppCompatActivity implements crop.TextClicked 
 
     public void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
-        viewPagerAdapter.addFragment(new Mainfragment(), "");
         viewPagerAdapter.addFragment(new Searchfragment(), "");
-
+        viewPagerAdapter.addFragment(new Mainfragment(), "");
+        viewPagerAdapter.addFragment(new aboutusfragment(), "");
         viewPager.setAdapter(viewPagerAdapter);
 
     }

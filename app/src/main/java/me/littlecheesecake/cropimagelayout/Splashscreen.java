@@ -27,8 +27,8 @@ public class Splashscreen extends AppCompatActivity {
 
         ImageView logosplash = (ImageView) findViewById(R.id.logoid);
         TextView apatxt = (TextView) findViewById(R.id.apatxt);
-        YoYo.with(Techniques.ZoomInDown).duration(1600).repeat(0).playOn(logosplash);
-        YoYo.with(Techniques.ZoomInUp).duration(1700).repeat(0).playOn(apatxt);
+        YoYo.with(Techniques.FadeInDown).duration(1600).repeat(0).playOn(logosplash);
+        YoYo.with(Techniques.FadeIn).duration(1700).repeat(0).playOn(apatxt);
 
         RelativeLayout container = (RelativeLayout) findViewById(R.id.splashrel);
         AnimationDrawable anim = (AnimationDrawable) container.getBackground();
@@ -51,7 +51,7 @@ public class Splashscreen extends AppCompatActivity {
 
                 finish();
             }
-        }, 2000);
+        }, 3000);
 
 
     }
