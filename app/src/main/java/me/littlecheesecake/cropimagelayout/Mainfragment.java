@@ -4,7 +4,6 @@ package me.littlecheesecake.cropimagelayout;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -162,7 +161,6 @@ public class Mainfragment extends Fragment {
         titletxt.setText(STEP_1);
 //        nextface.setVisibility(View.VISIBLE);
         image.setImageDrawable(getResources().getDrawable(R.drawable.anonymous));
-
 
 
 //        String[] SamsungPhones = new String[]{"Galaxy S", "Galaxy S2",
@@ -386,7 +384,7 @@ public class Mainfragment extends Fragment {
                         calltotalscore2.enqueue(new retrofit2.Callback<Object>() {
                             @Override
                             public void onResponse(Call<Object> call, Response<Object> response) {
-                                if (titletxt.getText() == STEP_2){
+                                if (titletxt.getText() == STEP_2) {
                                     insertbtn.setVisibility(View.VISIBLE);
                                     detectbtn.setVisibility(View.VISIBLE);
                                     waitlayout.setVisibility(View.INVISIBLE);
@@ -450,7 +448,6 @@ public class Mainfragment extends Fragment {
                         });
 
 
-
                     } else {
                         Toast.makeText(getActivity(), "Please choose a photo", Toast.LENGTH_SHORT).show();
                     }
@@ -461,10 +458,10 @@ public class Mainfragment extends Fragment {
 //                    if (pixx1 == 0 && pixx2 == 0 && pixy1 == 0 && pixy2 == 0) {
 
 //                        if (responsephoto != null) {
-                            pixy1 = responsephoto.get(counter).get(0).intValue();
-                            pixx2 = responsephoto.get(counter).get(1).intValue();
-                            pixy2 = responsephoto.get(counter).get(2).intValue();
-                            pixx1 = responsephoto.get(counter).get(3).intValue();
+                    pixy1 = responsephoto.get(counter).get(0).intValue();
+                    pixx2 = responsephoto.get(counter).get(1).intValue();
+                    pixy2 = responsephoto.get(counter).get(2).intValue();
+                    pixx1 = responsephoto.get(counter).get(3).intValue();
 //                        } else {
 //
 //                            Toast.makeText(getActivity(), "no face detected", Toast.LENGTH_SHORT).show();
@@ -493,7 +490,7 @@ public class Mainfragment extends Fragment {
                     }
 
 
-                    Log.d("inserting", "onClick: this is insertcols:"+colstoinsert);
+                    Log.d("inserting", "onClick: this is insertcols:" + colstoinsert);
                     waitlayout.setVisibility(View.VISIBLE);
                     RequestInterface insertrequest = ApiClient.getClient().create(RequestInterface.class);
                     //[[responsephoto,b,c,d]]
@@ -507,7 +504,7 @@ public class Mainfragment extends Fragment {
                             Log.d("inserting", "inserting: you are inside on response:  " + response.message()
                                     + " response body is :  " + response.body());
                             Log.d("inserting", "inserting: response is being done");
-                            Toast.makeText(getActivity(), "the response " + response.body() +"\n"+ response.message(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(getActivity(), "the response " + response.body() + "\n" + response.message(), Toast.LENGTH_LONG).show();
 //
                         }
 
@@ -827,7 +824,14 @@ public class Mainfragment extends Fragment {
                     image.setVisibility(View.VISIBLE);
                     imagetocrop2 = (Bitmap) selectedImage;
 //                imagetocrop2 = getResizedBitmap(selectedImage,selectedImage.getWidth(),selectedImage.getHeight());
-                    imagetocrop2 = Bitmap.createScaledBitmap(selectedImage, selectedImage.getWidth() / 10, selectedImage.getHeight() / 10, false);
+                    double A = 120000;
+                    double x = selectedImage.getWidth();
+                    double y = selectedImage.getHeight();
+                    double alpha = A / (x * y);
+                    alpha = (double) Math.pow(alpha, 0.5);
+                    x *= alpha;
+                    y *= alpha;
+                    imagetocrop2 = Bitmap.createScaledBitmap(selectedImage, (int) (x), (int) (y), false);
                     image.setImageBitmap(imagetocrop2);
                     imagetocrop = new BitmapDrawable(getResources(), selectedImage);
 
